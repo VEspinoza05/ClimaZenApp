@@ -13,9 +13,9 @@ export default function WelcomeView({ navigation }) {
 
         <Text style={styles.appName}>ClimaZen</Text>
 
-        <CustomButton title="Registrarse" style={styles.button}/>
+        <CustomButton title="Registrarse" style={styles.button} />
 
-        <CustomButton title="Iniciar sesión" style={styles.button} />
+        <CustomButton title="Iniciar sesión" style={styles.button} onPress={() => navigation.navigate('Login')} />
 
       </View>
     </ImageBackground>
