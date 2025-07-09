@@ -90,6 +90,15 @@ const linkStyle = StyleSheet.create({
   }
 })
 
+const secondTitleScreenStyle = StyleSheet.create({
+  secondTitleScreen: {
+    fontSize: 22,
+    fontFamily: 'OpenSans_700Bold',
+    textAlign: 'center',
+    paddingVertical: 8,
+  }
+})
+
 export { backgroundStyle,
     cardStyle,
     titleStyle,
@@ -99,5 +108,6 @@ export { backgroundStyle,
     checkboxContainerStyle,
     checkboxLabelStyle,
     checkboxStyle,
-    linkStyle 
+    linkStyle,
+    secondTitleScreenStyle
 };

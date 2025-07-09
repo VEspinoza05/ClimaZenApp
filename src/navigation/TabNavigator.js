@@ -1,13 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { Text } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Text, TouchableOpacity, View } from 'react-native';
+import MinicoursesView from '../views/MinicoursesView';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   return (
     <Tab.Navigator 
-        initialRouteName="PantallaA"
+        initialRouteName="Minicourses"
         screenOptions={{
           headerStyle: { backgroundColor: '#3ca380', }, 
           headerTitleStyle: {
@@ -34,13 +36,20 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen 
-        name="PantallaB"
-        component={() => (<Text>PantallaB</Text>)}
+        name='Minicourses'
+        component={MinicoursesView}
         options={{
-          title: 'Pantalla B', 
+          title: 'Minicursos', 
           tabBarIcon: ({color, size}) => (
-            <AntDesign name="stepbackward" size={size} color={color}/>
-          )
+            <FontAwesome name='graduation-cap' size={size} color={color}/>
+          ),
+          headerRight: () => (
+            <View style={{ marginRight: 16 }}>
+              <TouchableOpacity>
+                <FontAwesome name='search' size={27} color={'white'}/>
+              </TouchableOpacity>
+            </View>
+          ),
           }}
       />
     </Tab.Navigator> 
