@@ -31,7 +31,7 @@ export default function RegisterView({ navigation }) {
                     <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
           </View>
 
-          <CustomButton title="Crear cuenta" style={greenButtonStyle.greenButton}/>
+          <CustomButton title="Crear cuenta" style={greenButtonStyle.greenButton} onPress={() => navigation.navigate('Tabs')} />
 
           <Link style={linkStyle.link} title="¿Ya tienes cuenta? Inicia Sesión" />
         </View>

@@ -30,7 +30,7 @@ export default function LoginView({ navigation }) {
           <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
         </View>
 
-        <CustomButton title="Entrar" style={greenButtonStyle.greenButton}/>
+        <CustomButton title="Entrar" style={greenButtonStyle.greenButton} onPress={() => navigation.navigate('Tabs')}/>
 
         <Link style={linkStyle.link} title="¿No tienes cuenta? Registrate" />
         
