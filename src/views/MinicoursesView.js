@@ -22,7 +22,11 @@ export default function MinicoursesView({navigation}) {
           />
         </ScrollView>
         
-        <CustomButton title="Explorar más..." style={[greenButtonStyle.greenButton, styles.exploreButton]} />
+        <CustomButton
+          title="Explorar más..."
+          style={[greenButtonStyle.greenButton, styles.exploreButton]} 
+          onPress={() => navigation.navigate('ExploreMinicourses')}
+        />
     </View>
   );
 }
