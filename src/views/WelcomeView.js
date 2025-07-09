@@ -14,7 +14,7 @@ export default function WelcomeView({ navigation }) {
 
         <Text style={titleStyle.title}>ClimaZen</Text>
 
-        <CustomButton title="Registrarse" style={greenButtonStyle.greenButton} />
+        <CustomButton title="Registrarse" style={greenButtonStyle.greenButton} onPress={() => navigation.navigate('Register')} />
 
         <CustomButton title="Iniciar sesión" style={greenButtonStyle.greenButton} onPress={() => navigation.navigate('Login')} />
 
