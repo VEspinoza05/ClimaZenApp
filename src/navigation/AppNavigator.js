@@ -13,7 +13,18 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="Welcome"
+      screenOptions={{ 
+        headerShown: false,
+        headerStyle: { backgroundColor: '#3ca380', }, 
+        headerTitleStyle: {
+          fontFamily: 'OpenSans_800ExtraBold',
+          fontSize: 27,
+        }, 
+        headerTintColor: 'white', 
+      }}
+    >
       <Stack.Screen name="Welcome" component={WelcomeView} />
       <Stack.Screen name="Login" component={LoginView} />
       <Stack.Screen name="Register" component={RegisterView} />
@@ -24,8 +35,6 @@ export default function AppNavigator() {
         options={{ 
           headerShown: true,
           title: 'Más Cursos',
-          headerStyle: { backgroundColor: '#3ca380' },
-          headerTintColor: 'white', 
           headerRight: () => (
             <View>
               <TouchableOpacity>
@@ -49,8 +58,6 @@ export default function AppNavigator() {
         options={{ 
           headerShown: true,
           title: 'Perfil',
-          headerStyle: { backgroundColor: '#3ca380' },
-          headerTintColor: 'white', 
         }}
       />
     </Stack.Navigator>
