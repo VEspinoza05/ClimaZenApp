@@ -39,7 +39,7 @@ export default function TabNavigator({navigation}) {
               <TouchableOpacity onPress={() => navigation.navigate('EmergencyContacts')}>
                 <Entypo name="phone" size={30} color="white" />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                 <Entypo name="user" size={30} color="white" />
               </TouchableOpacity>
             </View>

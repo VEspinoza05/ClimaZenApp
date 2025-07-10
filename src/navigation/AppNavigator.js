@@ -7,6 +7,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import ExploreMinicoursesView from '../views/ExploreMinicoursesView';
 import { View, TouchableOpacity } from 'react-native';
 import EmergencyContactsView from '../views/EmergencyContactsView';
+import ProfileView from '../views/ProfileView';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +41,16 @@ export default function AppNavigator() {
         options={{ 
           headerShown: true,
           title: 'Numeros emergencia'
+        }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileView}
+        options={{ 
+          headerShown: true,
+          title: 'Perfil',
+          headerStyle: { backgroundColor: '#3ca380' },
+          headerTintColor: 'white', 
         }}
       />
     </Stack.Navigator>
