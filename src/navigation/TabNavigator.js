@@ -7,7 +7,7 @@ import HomeView from '../views/HomeView'
 
 const Tab = createBottomTabNavigator();
 
-export default function TabNavigator() {
+export default function TabNavigator({navigation}) {
   return (
     <Tab.Navigator 
         initialRouteName="Home"
@@ -36,7 +36,7 @@ export default function TabNavigator() {
           ),
           headerRight: () => (
             <View style={{ flexDirection: 'row', gap: 20, marginRight: 16, alignItems: 'center' }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('EmergencyContacts')}>
                 <Entypo name="phone" size={30} color="white" />
               </TouchableOpacity>
               <TouchableOpacity>

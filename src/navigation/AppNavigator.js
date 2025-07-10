@@ -6,6 +6,7 @@ import TabNavigator from './TabNavigator';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import ExploreMinicoursesView from '../views/ExploreMinicoursesView';
 import { View, TouchableOpacity } from 'react-native';
+import EmergencyContactsView from '../views/EmergencyContactsView';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,14 @@ export default function AppNavigator() {
               </TouchableOpacity>
             </View>
           )
+        }}
+      />
+      <Stack.Screen
+        name="EmergencyContacts"
+        component={EmergencyContactsView}
+        options={{ 
+          headerShown: true,
+          title: 'Numeros emergencia'
         }}
       />
     </Stack.Navigator>
