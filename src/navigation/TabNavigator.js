@@ -4,6 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import MinicoursesView from '../views/MinicoursesView';
 import Entypo from '@expo/vector-icons/Entypo';
 import HomeView from '../views/HomeView'
+import WeatherView from '../views/WeatherView';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,6 +46,23 @@ export default function TabNavigator({navigation}) {
             </View>
           ),
           }}
+      />
+      <Tab.Screen
+        name="Weather"
+        component={WeatherView}
+        options={{
+          title: 'Clima',
+          tabBarIcon: ({color, size}) => (
+            <FontAwesome name="umbrella" size={size} color={color} />
+          ),
+          headerRight: () => (
+            <View style={{ marginRight: 16 }}>
+              <TouchableOpacity>
+                <FontAwesome name='plus' size={27} color={'white'}/>
+              </TouchableOpacity>
+            </View>
+          ),
+        }}
       />
       <Tab.Screen 
         name='Minicourses'
