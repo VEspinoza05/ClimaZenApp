@@ -1,8 +1,8 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const EventAndWeatherComponent = ({ title, hour,  prediction, weatherReminder, weatherImage }) => {
+const EventAndWeatherComponent = ({ title, hour,  prediction, weatherReminder, weatherImage, cardStyle }) => {
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, cardStyle]}>
       <View style={styles.row}>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
