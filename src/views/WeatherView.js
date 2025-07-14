@@ -49,10 +49,14 @@ export default function WeatherView({navigation}) {
             cardStyle={[
               styles.verticalBorders,
               styles.enventAndWeatherCard,
-              index === 0 ? styles.firstItemBorder : 
-              index === DATA.length - 1 ? styles.lastItemBorder :
-              styles.noTopAndBottomBorders
+              (
+                index === 0 ? styles.firstItemBorder : 
+                index === DATA.length - 1 ? styles.lastItemBorder :
+                styles.noTopAndBottomBorders
+              ),
+              index !== DATA.length - 1 ? styles.noUsePaddingBottom : undefined,
             ]}
+            useSeparator={index === DATA.length - 1 ? false : true}
           />
         )}
 
@@ -118,5 +122,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+  },
+  noUsePaddingBottom: {
+    paddingTop: 12,
+    paddingBottom: 0,
+    paddingHorizontal: 12,
   },
 });
