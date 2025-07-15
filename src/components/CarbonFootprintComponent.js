@@ -1,9 +1,24 @@
 import { View, Text, StyleSheet } from 'react-native';
 import CheckboxWithLabel from './CheckboxWithLabelComponent';
 
-const carbonFootprintComponent = ({ completedActivities, totalActivities, nextActivity }) => {
+const renderNextActivityContainer = (nextActivity) => {
+  return(
+    <View>
+          <Text style={[styles.title, {marginVertical: 10} ]}>Proxima Actividad</Text>
+          <View style={styles.subcard}>
+            <CheckboxWithLabel 
+              label={nextActivity}
+              value={false}
+              labelStyle={ {fontSize: 12}}
+            />
+          </View>
+    </View>
+  )
+}
+
+const carbonFootprintComponent = ({ completedActivities, totalActivities, nextActivity, cardStyle }) => {
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, cardStyle]}>
       <Text style={styles.title}>Progreso</Text>
       <View style={[styles.row, styles.progressContainer]}>
         <View style={styles.progressBackground}>
@@ -12,14 +27,7 @@ const carbonFootprintComponent = ({ completedActivities, totalActivities, nextAc
         <Text style={styles.percent}>{(completedActivities / totalActivities)  * 100}%</Text>
       </View>
       <Text style={styles.subtitle}>{completedActivities} de {totalActivities}</Text>
-      <Text style={[styles.title, {marginVertical: 10} ]}>Proxima Actividad</Text>
-      <View style={styles.subcard}>
-        <CheckboxWithLabel 
-          label={nextActivity}
-          value={false}
-          labelStyle={ {fontSize: 12}}
-        />
-      </View>
+        {nextActivity ? renderNextActivityContainer(nextActivity) : undefined}
     </View>
   );
 };
