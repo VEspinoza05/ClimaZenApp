@@ -13,6 +13,7 @@ export default function MinicoursesView({navigation}) {
               author="Juan"
               progress={1}
               image={require('../../assets/botellas.png')}
+              onPress={() => navigation.navigate('MinicourseProgress')}
           />
           <ProgressCourseCard
               title="Curso de manualidades con cartón"
