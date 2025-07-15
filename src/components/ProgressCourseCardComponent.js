@@ -1,8 +1,11 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ProgressCourseCardComponent = ({ title, author, progress, image }) => {
+const ProgressCourseCardComponent = ({ title, author, progress, image, onPress }) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={onPress}
+    >
       <View style={styles.row}>
         <Image source={image} style={styles.image} />
         <View style={styles.textContainer}>
@@ -16,7 +19,7 @@ const ProgressCourseCardComponent = ({ title, author, progress, image }) => {
         </View>
         <Text style={styles.percent}>{progress * 100}%</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
