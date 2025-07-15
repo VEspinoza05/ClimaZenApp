@@ -1,10 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Text, TouchableOpacity, View } from 'react-native';
 import MinicoursesView from '../views/MinicoursesView';
 import Entypo from '@expo/vector-icons/Entypo';
 import HomeView from '../views/HomeView'
 import WeatherView from '../views/WeatherView';
+import CarbonFootprintView from '../views/CarbonFootprintView';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,6 +64,30 @@ export default function TabNavigator({navigation}) {
               </TouchableOpacity>
             </View>
           ),
+        }}
+      />
+      <Tab.Screen
+        name='CarbonFootprint'
+        component={CarbonFootprintView}
+        options={{
+          title: 'Huella de carbono',
+          tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons name="foot-print" size={size} color={color} />
+          ),
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', gap: 20, marginRight: 16, alignItems: 'center' }}>
+              <TouchableOpacity>
+                <FontAwesome name='search' size={27} color={'white'}/>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Entypo name="dots-three-vertical" size={27} color="white" />
+              </TouchableOpacity>
+            </View>
+          ),
+          headerTitleContainerStyle: {
+            width: '60%',
+            alignItems: 'center',
+          },
         }}
       />
       <Tab.Screen 
