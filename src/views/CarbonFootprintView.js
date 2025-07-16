@@ -1,13 +1,17 @@
-import { Text, View, StyleSheet, FlatList } from "react-native"
+import { Text, View, StyleSheet, FlatList, TouchableOpacity } from "react-native"
 import { secondTitleScreenStyle } from "../theme/Style";
 import CarbonFootprintComponent from "../components/CarbonFootprintComponent";
 import TaskCardComponent from "../components/TaskCardComponent";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function CarbonFootprintView() {
     const DATA = [
       {id: 1, title: 'Preparar cena sin carne', hour: '6:00 pm', isCompleted: false},
       {id: 2, title: 'Usar la lavadora con carga completa xxxxxxxxxxxxxxxxxxxxx', hour: '4:00 pm', isCompleted: true},
       {id: 3, title: 'Plantar 1 arbol en mi patio', hour: '2:00 pm', isCompleted: true},
+      {id: 4, title: 'Plantar 1 arbol en mi patio', hour: '2:00 pm', isCompleted: true},
+      {id: 5, title: 'Plantar 1 arbol en mi patio', hour: '2:00 pm', isCompleted: true},
+      {id: 6, title: 'Plantar 1 arbol en mi patio xxxxxxxxxx', hour: '2:00 pm', isCompleted: true},
     ]
 
     return(
@@ -51,6 +55,9 @@ export default function CarbonFootprintView() {
 
               keyExtractor={item => item.id}
             />
+            <TouchableOpacity style={styles.addButton}>
+              <FontAwesome name='plus' size={27} color={'white'}/>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -96,7 +103,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
-    marginBottom: 16,
+    marginBottom: 100,
   },
   noTopAndBottomBorders: {
     borderBottomWidth: 0,
@@ -110,5 +117,16 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 0,
     paddingHorizontal: 12,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 30,
+    right: 20,
+    backgroundColor: '#3ca380',
+    borderRadius: 10,
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
