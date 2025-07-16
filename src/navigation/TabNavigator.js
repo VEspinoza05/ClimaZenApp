@@ -7,6 +7,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import HomeView from '../views/HomeView'
 import WeatherView from '../views/WeatherView';
 import CarbonFootprintView from '../views/CarbonFootprintView';
+import ReciclyngCentersView from '../views/ReciclyngCentersView';
 
 const Tab = createBottomTabNavigator();
 
@@ -88,6 +89,16 @@ export default function TabNavigator({navigation}) {
             width: '60%',
             alignItems: 'center',
           },
+        }}
+      />
+      <Tab.Screen
+        name='ReciclyngCentersMap'
+        component={ReciclyngCentersView}
+        options={{
+          title: 'Lugares de reciclaje', 
+          tabBarIcon: ({color, size}) => (
+            <Entypo name="location-pin" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen 
