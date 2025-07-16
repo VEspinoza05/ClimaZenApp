@@ -1,7 +1,9 @@
 import { Text, View, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import Slider from '@react-native-community/slider';
+import CustomButton from '../components/CustomButtonComponent'
 import { useState } from "react";
+import { greenButtonStyle } from '../theme/Style'
 
 export default function ReciclyngCentersView() {
     const [radiusValue, setRadiusValue] = useState(0);
@@ -22,6 +24,10 @@ export default function ReciclyngCentersView() {
                 minimumTrackTintColor='#3ca380'
                 maximumTrackTintColor='#6a6a6a'
                 thumbTintColor='#3ca380'
+            />
+            <CustomButton
+                title={'Recordarme reciclar'}
+                style={[greenButtonStyle.greenButton, styles.reminderButton]}
             />
         </View>
     )
@@ -47,4 +53,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'OpenSans_400Regular',
   },
+  reminderButton: {
+    marginVertical: 0,
+  }
 })
