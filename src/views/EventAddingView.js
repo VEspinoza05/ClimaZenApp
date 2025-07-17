@@ -6,8 +6,17 @@ import { useState } from "react";
 
 export default function EventAddingView() {
     const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState( new Date() )
     const [show, setShow] = useState(false);
+    const [showTimeSelector, setShowTimeSelector] = useState(false)
     const [isDateSetted, setIsDateSetted] = useState(false)
+    const [isTimeSelected, setIsTimeSelected] = useState(false)
+
+    const timeOptions = {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    }
 
     const onChange = (event, selectedDate) => {
         setShow(false);
@@ -18,6 +27,17 @@ export default function EventAddingView() {
         
         setIsDateSetted(true);
         setDate(selectedDate);
+    };
+
+    const onChangeTimeSelector = (event, selectedTime) => {
+        setShowTimeSelector(false);
+
+        if (event?.type === 'dismissed' && !isTimeSelected) {
+            return;
+        }
+        
+        setIsTimeSelected(true);
+        setTime(selectedTime);
     };
 
     return(
@@ -41,6 +61,22 @@ export default function EventAddingView() {
                     is24Hour={true}
                     display="default"
                     onChange={onChange}
+                />
+            )}
+            <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowTimeSelector(true)} >
+                <FontAwesome name='calendar' size={24} color={isTimeSelected ? 'black' : '#6a6a6a'} />
+                <Text style={[styles.pressableLabel, isTimeSelected ? {color: 'black'} : undefined]}>
+                    {isTimeSelected ? `${time.toLocaleTimeString('en-US', timeOptions)}` : 'Hora'}
+                </Text>
+            </Pressable>
+            {showTimeSelector && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={time}
+                    mode="time"
+                    is24Hour={false}
+                    display="default"
+                    onChange={onChangeTimeSelector}
                 />
             )}
         </View>
