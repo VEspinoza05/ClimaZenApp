@@ -7,9 +7,9 @@ import { useState } from "react";
 export default function EventAddingView() {
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState( new Date() )
-    const [show, setShow] = useState(false);
+    const [showDateSelector, setShowDateSelector] = useState(false);
     const [showTimeSelector, setShowTimeSelector] = useState(false)
-    const [isDateSetted, setIsDateSetted] = useState(false)
+    const [isDateSelected, setIsDateSelected] = useState(false)
     const [isTimeSelected, setIsTimeSelected] = useState(false)
 
     const timeOptions = {
@@ -18,14 +18,14 @@ export default function EventAddingView() {
       hour12: true
     }
 
-    const onChange = (event, selectedDate) => {
-        setShow(false);
+    const onChangeDateSelector = (event, selectedDate) => {
+        setShowDateSelector(false);
 
-        if (event?.type === 'dismissed' && !isDateSetted) {
+        if (event?.type === 'dismissed' && !isDateSelected) {
             return;
         }
         
-        setIsDateSetted(true);
+        setIsDateSelected(true);
         setDate(selectedDate);
     };
 
@@ -47,20 +47,20 @@ export default function EventAddingView() {
                 placeholder="Titulo"
                 style={[inputStyle.input, styles.titleInput]}
             />
-            <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShow(true)} >
-                <FontAwesome name='calendar' size={24} color={isDateSetted ? 'black' : '#6a6a6a'} />
-                <Text style={[styles.pressableLabel, isDateSetted ? {color: 'black'} : undefined]}>
-                    {isDateSetted ? date.toDateString() : 'Fecha'}
+            <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
+                <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />
+                <Text style={[styles.pressableLabel, isDateSelected ? {color: 'black'} : undefined]}>
+                    {isDateSelected ? date.toDateString() : 'Fecha'}
                 </Text>
             </Pressable>
-            {show && (
+            {showDateSelector && (
                 <DateTimePicker
                     testID="dateTimePicker"
                     value={date}
                     mode="date"
                     is24Hour={true}
                     display="default"
-                    onChange={onChange}
+                    onChange={onChangeDateSelector}
                 />
             )}
             <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowTimeSelector(true)} >
