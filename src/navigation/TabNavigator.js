@@ -60,7 +60,7 @@ export default function TabNavigator({navigation}) {
           ),
           headerRight: () => (
             <View style={{ marginRight: 16 }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('EventAdding')}>
                 <FontAwesome name='plus' size={27} color={'white'}/>
               </TouchableOpacity>
             </View>

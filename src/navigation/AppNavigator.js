@@ -9,6 +9,7 @@ import { View, TouchableOpacity } from 'react-native';
 import EmergencyContactsView from '../views/EmergencyContactsView';
 import ProfileView from '../views/ProfileView';
 import MinicourseProgressView from '../views/MinicourseProgressView';
+import EventAddingView from '../views/EventAddingView';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,6 +68,13 @@ export default function AppNavigator() {
         options={{
           headerShown: true,
           title: 'Minicursos'
+        }}
+      />
+      <Stack.Screen name="EventAdding"
+        component={EventAddingView}
+        options={{ 
+          headerShown: true,
+          title: 'Agregar Evento'
         }}
       />
     </Stack.Navigator>
