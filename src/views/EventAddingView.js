@@ -65,7 +65,7 @@ export default function EventAddingView() {
                 />
             )}
             <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowTimeSelector(true)} >
-                <FontAwesome name='calendar' size={24} color={isTimeSelected ? 'black' : '#6a6a6a'} />
+                <FontAwesome name='clock-o' size={24} color={isTimeSelected ? 'black' : '#6a6a6a'} />
                 <Text style={[styles.pressableLabel, isTimeSelected ? {color: 'black'} : undefined]}>
                     {isTimeSelected ? `${time.toLocaleTimeString('en-US', timeOptions)}` : 'Hora'}
                 </Text>
