@@ -4,7 +4,7 @@ import CarbonFootprintComponent from "../components/CarbonFootprintComponent";
 import TaskCardComponent from "../components/TaskCardComponent";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-export default function CarbonFootprintView() {
+export default function CarbonFootprintView({navigation}) {
     const DATA = [
       {id: 1, title: 'Preparar cena sin carne', hour: '6:00 pm', isCompleted: false},
       {id: 2, title: 'Usar la lavadora con carga completa xxxxxxxxxxxxxxxxxxxxx', hour: '4:00 pm', isCompleted: true},
@@ -55,8 +55,8 @@ export default function CarbonFootprintView() {
 
               keyExtractor={item => item.id}
             />
-            <TouchableOpacity style={styles.addButton}>
-              <FontAwesome name='plus' size={27} color={'white'}/>
+            <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('TaskAdding')}>
+              <FontAwesome name='plus' size={27} color={'white'} />
             </TouchableOpacity>
         </View>
     )

@@ -10,6 +10,7 @@ import EmergencyContactsView from '../views/EmergencyContactsView';
 import ProfileView from '../views/ProfileView';
 import MinicourseProgressView from '../views/MinicourseProgressView';
 import EventAddingView from '../views/EventAddingView';
+import TaskAddingView from '../views/TaskAddingView';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +76,14 @@ export default function AppNavigator() {
         options={{ 
           headerShown: true,
           title: 'Agregar Evento'
+        }}
+      />
+      <Stack.Screen
+        name='TaskAdding'
+        component={TaskAddingView}
+        options={{
+          headerShown: true,
+          title: 'Agregar Tarea'
         }}
       />
     </Stack.Navigator>
