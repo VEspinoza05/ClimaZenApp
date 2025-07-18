@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from "react";
+import CustomButtonComponent from "../components/CustomButtonComponent";
 
 export default function EventAddingView() {
     const [date, setDate] = useState(new Date());
@@ -43,49 +44,63 @@ export default function EventAddingView() {
 
     return(
         <View style={styles.screen}>
-            <TextInput 
-                multiline={true}
-                placeholder="Titulo"
-                style={[inputStyle.input, styles.titleInput]}
-            />
-            <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
-                <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />
-                <Text style={[styles.pressableLabel, isDateSelected ? {color: 'black'} : undefined]}>
-                    {isDateSelected ? date.toDateString() : 'Fecha'}
-                </Text>
-            </Pressable>
-            {showDateSelector && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode="date"
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChangeDateSelector}
+            <View style={styles.inputsContainer}>
+                <TextInput 
+                    multiline={true}
+                    placeholder="Titulo"
+                    style={[inputStyle.input, styles.titleInput]}
                 />
-            )}
-            <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowTimeSelector(true)} >
-                <FontAwesome name='clock-o' size={24} color={isTimeSelected ? 'black' : '#6a6a6a'} />
-                <Text style={[styles.pressableLabel, isTimeSelected ? {color: 'black'} : undefined]}>
-                    {isTimeSelected ? `${time.toLocaleTimeString('en-US', timeOptions)}` : 'Hora'}
-                </Text>
-            </Pressable>
-            {showTimeSelector && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={time}
-                    mode="time"
-                    is24Hour={false}
-                    display="default"
-                    onChange={onChangeTimeSelector}
+                <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
+                    <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />
+                    <Text style={[styles.pressableLabel, isDateSelected ? {color: 'black'} : undefined]}>
+                        {isDateSelected ? date.toDateString() : 'Fecha'}
+                    </Text>
+                </Pressable>
+                {showDateSelector && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChangeDateSelector}
+                    />
+                )}
+                <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowTimeSelector(true)} >
+                    <FontAwesome name='clock-o' size={24} color={isTimeSelected ? 'black' : '#6a6a6a'} />
+                    <Text style={[styles.pressableLabel, isTimeSelected ? {color: 'black'} : undefined]}>
+                        {isTimeSelected ? `${time.toLocaleTimeString('en-US', timeOptions)}` : 'Hora'}
+                    </Text>
+                </Pressable>
+                {showTimeSelector && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={time}
+                        mode="time"
+                        is24Hour={false}
+                        display="default"
+                        onChange={onChangeTimeSelector}
+                    />
+                )}
+                <Pressable style={[inputStyle.input, styles.locationInput]} >
+                    <Entypo name="location-pin" size={24} color={'#6a6a6a'} />
+                    <Text style={[styles.pressableLabel]}>
+                        Ubicación
+                    </Text>
+                </Pressable>
+            </View>
+            <View style={styles.actionButtonsContainer}>
+                <CustomButtonComponent
+                    title={'Cancelar'}
+                    textStyle={styles.cancelButtonText}
+                    style={styles.cancelButton}
                 />
-            )}
-            <Pressable style={[inputStyle.input, styles.locationInput]} >
-                <Entypo name="location-pin" size={24} color={'#6a6a6a'} />
-                <Text style={[styles.pressableLabel]}>
-                    Ubicación
-                </Text>
-            </Pressable>
+                <CustomButtonComponent
+                    title={'Guardar'}
+                    style={styles.disabledSaveButton}
+                    textStyle={styles.saveButtonText}
+                />
+            </View>
         </View>
     )
 }
@@ -116,5 +131,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8
-  }
+  },
+  cancelButton: {
+    borderWidth: 2,
+    borderColor: '#6a6a6a',
+    flex: 1,
+  },
+  cancelButtonText: {
+    fontFamily: 'OpenSans_400Regular',
+    fontSize: 18,
+    color: '#6a6a6a',
+  },
+  disabledSaveButton: {
+    borderWidth: 2,
+    borderColor: '#6a6a6a',
+    backgroundColor: '#6a6a6a',
+    flex: 1,
+  },
+  saveButtonText: {
+    fontFamily: 'OpenSans_400Regular',
+    fontSize: 18,
+    color: 'white',
+  },
+  actionButtonsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  inputsContainer: {
+    flex: 1,
+  },
 })
