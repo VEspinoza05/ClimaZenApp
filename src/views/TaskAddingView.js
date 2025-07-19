@@ -2,6 +2,7 @@ import { View, StyleSheet, TextInput, FlatList, Pressable, Text } from "react-na
 import { inputStyle } from "../theme/Style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from "react";
 
 export default function TaskAddingView() {
@@ -84,6 +85,12 @@ export default function TaskAddingView() {
                                 onChange={onChangeTimeSelector}
                             />
                         )}
+                        <Pressable style={[inputStyle.input, styles.locationInput]} >
+                            <Entypo name="location-pin" size={24} color={'#6a6a6a'} />
+                            <Text style={[styles.pressableLabel]}>
+                                Ubicación
+                            </Text>
+                        </Pressable>
                     </View>
                 )}
 
@@ -114,5 +121,10 @@ const styles = StyleSheet.create({
     fontSize: 18,   
     fontFamily: 'OpenSans_400Regular',
     color: '#6a6a6a',
+  },
+  locationInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8
   },
 })
