@@ -7,9 +7,18 @@ import { useState } from "react";
 export default function TaskAddingView() {
     const DATA = []
 
-    const [date, setDate] = useState(new Date());
-    const [showDateSelector, setShowDateSelector] = useState(false);
+    const [date, setDate] = useState(new Date())
+    const [time, setTime] = useState(new Date())
+    const [showDateSelector, setShowDateSelector] = useState(false)
+    const [showTimeSelector, setShowTimeSelector] = useState(false)
     const [isDateSelected, setIsDateSelected] = useState(false)
+    const [isTimeSelected, setIsTimeSelected] = useState(false)
+
+    const timeOptions = {
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+    }
 
     const onChangeDateSelector = (event, selectedDate) => {
         setShowDateSelector(false);
@@ -20,6 +29,17 @@ export default function TaskAddingView() {
         
         setIsDateSelected(true);
         setDate(selectedDate);
+    };
+
+    const onChangeTimeSelector = (event, selectedTime) => {
+        setShowTimeSelector(false);
+
+        if (event?.type === 'dismissed' && !isTimeSelected) {
+            return;
+        }
+        
+        setIsTimeSelected(true);
+        setTime(selectedTime);
     };
     
     return(
@@ -46,6 +66,22 @@ export default function TaskAddingView() {
                                 is24Hour={true}
                                 display="default"
                                 onChange={onChangeDateSelector}
+                            />
+                        )}
+                        <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowTimeSelector(true)} >
+                            <FontAwesome name='clock-o' size={24} color={isTimeSelected ? 'black' : '#6a6a6a'} />
+                            <Text style={[styles.pressableLabel, isTimeSelected ? {color: 'black'} : undefined]}>
+                                {isTimeSelected ? `${time.toLocaleTimeString('en-US', timeOptions)}` : 'Hora'}
+                            </Text>
+                        </Pressable>
+                        {showTimeSelector && (
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                value={time}
+                                mode="time"
+                                is24Hour={false}
+                                display="default"
+                                onChange={onChangeTimeSelector}
                             />
                         )}
                     </View>
