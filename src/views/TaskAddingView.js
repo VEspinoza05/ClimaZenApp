@@ -4,6 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import CustomButtonComponent from "../components/CustomButtonComponent";
 import { useState } from "react";
 
 export default function TaskAddingView() {
@@ -130,7 +131,24 @@ export default function TaskAddingView() {
                         </TouchableOpacity>
                     </View>
                 )}
+
+                contentContainerStyle={{
+                    paddingHorizontal: 20,
+                }}
             />
+
+            <View style={styles.actionButtonsContainer}>
+                        <CustomButtonComponent
+                            title={'Cancelar'}
+                            textStyle={styles.cancelButtonText}
+                            style={styles.cancelButton}
+                        />
+                        <CustomButtonComponent
+                            title={'Guardar'}
+                            style={styles.disabledSaveButton}
+                            textStyle={styles.saveButtonText}
+                        />
+                    </View>
         </View>
     )
 }
@@ -140,7 +158,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#ffffff',
         paddingVertical: 20,
-        paddingHorizontal: 20,
     },
     titleInput: {
         height: 100,
@@ -179,6 +196,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#6a6a6a',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
+    marginBottom: 16,
   },
   noTopAndBottomBorders: {
     borderBottomWidth: 0,
@@ -210,5 +228,27 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     paddingVertical: 0,
     marginBottom: 16,
+  },
+  cancelButton: {
+    borderWidth: 2,
+    borderColor: '#6a6a6a',
+    flex: 1,
+  },
+  cancelButtonText: {
+    fontFamily: 'OpenSans_400Regular',
+    fontSize: 18,
+    color: '#6a6a6a',
+  },
+  disabledSaveButton: {
+    borderWidth: 2,
+    borderColor: '#6a6a6a',
+    backgroundColor: '#6a6a6a',
+    flex: 1,
+  },
+  actionButtonsContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingTop: 8,
+    paddingHorizontal: 20,
   },
 })
