@@ -1,12 +1,22 @@
-import { View, StyleSheet, TextInput, FlatList, Pressable, Text } from "react-native";
-import { inputStyle } from "../theme/Style"
+import { View, StyleSheet, TextInput, FlatList, Pressable, Text, TouchableOpacity, Alert } from "react-native";
+import { inputStyle, secondTitleScreenStyle } from "../theme/Style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { useState } from "react";
 
 export default function TaskAddingView() {
-    const DATA = []
+    const suggestedTasks = [
+        'Plantar 1 árbol en mi patio',
+        'Instalar bombillos LED',
+        'Comprar ropa de segunda mano',
+    ]
+
+    const DATA = [
+        ...suggestedTasks,
+        'Ver mas tareas...',
+    ]
 
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
@@ -91,10 +101,35 @@ export default function TaskAddingView() {
                                 Ubicación
                             </Text>
                         </Pressable>
+                        <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Tareas Sugeridas</Text>
                     </View>
                 )}
 
                 data={DATA}
+
+                renderItem={({item, index}) => (
+                    <View
+                        style={[
+                        styles.verticalBorders,
+                        styles.paddingItemContainer,
+                        index === 0 ? styles.firstItemBorder : undefined,
+                        index === DATA.length - 1 ? styles.lastItemBorder : undefined,
+                        ]}
+                    >
+                        <TouchableOpacity
+                            style={[styles.touchableContainer, index !== DATA.length - 1 ? styles.separatorLine : undefined,]}
+                            onPress={() => index === DATA.length - 1 ?
+                                Alert.alert("La ultima opcion abre la lista de tareas sugeridas") :
+                                Alert.alert("Tarea sugerida")
+                            }
+                        >
+                            <Text style={styles.textItem}>
+                                {item}
+                            </Text>
+                            {index === DATA.length - 1 ? <AntDesign name="rightcircle" size={24} color="black" /> : undefined}
+                        </TouchableOpacity>
+                    </View>
+                )}
             />
         </View>
     )
@@ -126,5 +161,54 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8
+  },
+  verticalBorders: {
+    borderLeftWidth: 2,
+    borderRightWidth: 2,
+    borderLeftColor: '#6a6a6a',
+    borderRightColor: '#6a6a6a',
+  },
+  firstItemBorder: {
+    borderTopWidth: 2,
+    borderTopColor: '#6a6a6a',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  lastItemBorder: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#6a6a6a',
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  noTopAndBottomBorders: {
+    borderBottomWidth: 0,
+    borderTopWidth: 0,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
+  paddingItemContainer: {
+    paddingTop: 12,
+    paddingHorizontal: 12,
+  },
+  separatorLine: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#6a6a6a',
+  },
+  textItem: {
+    fontSize: 14,
+    fontFamily: 'OpenSans_400Regular',
+    textAlignVertical: 'center'
+  },
+  touchableContainer: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    paddingBottom: 12
+  },
+  homeTitleScreen: {
+    textAlign: 'left',
+    paddingVertical: 0,
+    marginBottom: 16,
   },
 })
