@@ -7,7 +7,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import CustomButtonComponent from "../components/CustomButtonComponent";
 import { useState } from "react";
 
-export default function TaskAddingView() {
+export default function TaskAddingView({navigation}) {
     const suggestedTasks = [
         'Plantar 1 árbol en mi patio',
         'Instalar bombillos LED',
@@ -120,7 +120,7 @@ export default function TaskAddingView() {
                         <TouchableOpacity
                             style={[styles.touchableContainer, index !== DATA.length - 1 ? styles.separatorLine : undefined,]}
                             onPress={() => index === DATA.length - 1 ?
-                                Alert.alert("La ultima opcion abre la lista de tareas sugeridas") :
+                                navigation.navigate('SuggestedTasks') :
                                 Alert.alert("Tarea sugerida")
                             }
                         >
