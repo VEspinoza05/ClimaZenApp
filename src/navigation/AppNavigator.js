@@ -12,6 +12,7 @@ import MinicourseProgressView from '../views/MinicourseProgressView';
 import EventAddingView from '../views/EventAddingView';
 import TaskAddingView from '../views/TaskAddingView';
 import SuggestedTasksView from '../views/SuggestedTasksView';
+import LessonView from '../views/LessonView';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +94,14 @@ export default function AppNavigator() {
         options={{
           headerShown: true,
           title: 'Tareas Sugeridas'
+        }}
+      />
+      <Stack.Screen
+        name='Lesson'
+        component={LessonView}
+        options={{
+          headerShown: true,
+          title: 'Aprendizaje'
         }}
       />
     </Stack.Navigator>

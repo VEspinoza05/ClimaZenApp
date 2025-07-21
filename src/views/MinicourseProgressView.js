@@ -44,6 +44,7 @@ export default function MinicourseProgressView({navigation}) {
                   title={item.title}
                   isCompleted={item.isCompleted}
                   useCheckBox={true}
+                  onPress={() => navigation.navigate('Lesson')}
                   cardStyle={[
                     styles.verticalBorders,
                     (
