@@ -1,6 +1,8 @@
 import { Text, SectionList, View, Image, StyleSheet } from "react-native"
 import { secondTitleScreenStyle } from '../theme/Style'
 import MinicourseSectionItemComponent from "../components/MinicourseSectionItemComponent"
+import CustomButtonComponent from '../components/CustomButtonComponent'
+import { greenButtonStyle } from "../theme/Style"
 
 export default function MinicourseProgressView({navigation}) {
     const DATA = [
@@ -62,6 +64,12 @@ export default function MinicourseProgressView({navigation}) {
 
               sections={DATA}
             />
+            <View style={styles.takeCourseButtonContainer}>
+                <CustomButtonComponent
+                    title={'Tomar curso'}
+                    style={[greenButtonStyle.greenButton, styles.takeCourseButton ]}
+                />
+            </View>
         </View>
     )
 }
@@ -128,5 +136,15 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 0,
     paddingHorizontal: 12,
+  },
+  takeCourseButtonContainer: {
+    padding: 8,
+    borderTopWidth: 2,
+    borderTopColor: '#6a6a6a',
+    alignItems: 'center'
+  },
+  takeCourseButton: {
+    width: '90%',
+    marginVertical: 0,
   },
 })
