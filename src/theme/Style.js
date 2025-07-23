@@ -35,13 +35,13 @@ const inputStyle = StyleSheet.create({
     input: {
         borderWidth: 2,
         width: '100%',
-        borderColor: '#ccc',
+        borderColor: '#6a6a6a',
         borderRadius: 25,
         padding: 12,
         marginBottom: 16,
         fontFamily: 'OpenSans_400Regular',
         fontSize: 18,
-        color: '#6a6a6a'
+        color: '#000000'
     }
 })
 

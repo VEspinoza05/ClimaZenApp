@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { backgroundStyle, cardStyle, titleStyle, inputStyle, greenButtonStyle, checkboxContainerStyle, checkboxStyle, checkboxLabelStyle, linkStyle } from "../theme/Style"
 
 export default function LoginView({ navigation }) {
-  const [isChecked, setChecked] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const { height: screenHeight } = Dimensions.get('window');
 
@@ -26,15 +26,15 @@ export default function LoginView({ navigation }) {
         <View style={cardStyle.card}>
           <Text style={titleStyle.title}>Iniciar Sesión</Text>
 
-          <TextInput placeholder="Correo electrónico" style={inputStyle.input} />
+          <TextInput placeholder="Correo electrónico" placeholderTextColor={'#6a6a6a'} style={inputStyle.input} />
 
-          <TextInput placeholder="Contraseña" secureTextEntry style={inputStyle.input} />
+          <TextInput placeholder="Contraseña" placeholderTextColor={'#6a6a6a'} secureTextEntry={!passwordVisible} style={inputStyle.input} />
 
           <View style={checkboxContainerStyle.checkboxContainer}>
             <Checkbox
               style={checkboxStyle.checkbox}
-              value={isChecked}
-              onValueChange={setChecked}
+              value={passwordVisible}
+              onValueChange={setPasswordVisible}
             />
             <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
           </View>
