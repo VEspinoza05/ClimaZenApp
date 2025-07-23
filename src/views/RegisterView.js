@@ -1,41 +1,50 @@
 import React from 'react';
-import { View, Text, TextInput, ImageBackground, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, ImageBackground, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Checkbox from 'expo-checkbox'
 import CustomButton from '../components/CustomButtonComponent'
 import Link from '../components/LinkComponent'
 import { useState } from 'react';
 import { backgroundStyle, cardStyle, titleStyle, inputStyle, greenButtonStyle, checkboxContainerStyle, checkboxStyle, checkboxLabelStyle, linkStyle } from "../theme/Style"
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function RegisterView({ navigation }) {
   const [isChecked, setChecked] = useState(false);
+  const [extraScroll, setExtraScroll] = useState(0)
 
   return (
-    <ImageBackground
-      source={require('../../assets/forest.jpg')}
-      style={backgroundStyle.background}
+    <KeyboardAwareScrollView
+      extraScrollHeight={extraScroll}
+      enableOnAndroid={true} 
+      keyboardShouldPersistTaps='handled'
+      contentContainerStyle={{flexGrow: 1}}
     >
-      <View style={cardStyle.card}>
+      <ImageBackground
+        source={require('../../assets/forest.jpg')}
+        style={backgroundStyle.background}
+      >
+        <View style={cardStyle.card}>
           <Text style={titleStyle.title}>Registrarse</Text>
 
-          <TextInput placeholder="Nombre completo" style={inputStyle.input} />
-          <TextInput placeholder="Correo electrónico" style={inputStyle.input} />
-          <TextInput placeholder="Contraseña" secureTextEntry style={inputStyle.input} />
-          <TextInput placeholder="Confirmar contraseña" secureTextEntry style={inputStyle.input} />
+          <TextInput placeholder="Nombre completo" style={inputStyle.input} onPress={() => setExtraScroll(50)}  />
+          <TextInput placeholder="Correo electrónico" style={inputStyle.input} onPress={() => setExtraScroll(50)}/>
+          <TextInput placeholder="Contraseña" secureTextEntry style={inputStyle.input} onPress={() => setExtraScroll(100)}/>
+          <TextInput placeholder="Confirmar contraseña" secureTextEntry style={inputStyle.input} onPress={() => setExtraScroll(150)} />
 
           <View style={checkboxContainerStyle.checkboxContainer}>
-                    <Checkbox
-                      style={checkboxStyle.checkbox}
-                      value={isChecked}
-                      onValueChange={setChecked}
-                    />
-                    <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
+            <Checkbox
+              style={checkboxStyle.checkbox}
+              value={isChecked}
+              onValueChange={setChecked}
+            />
+              <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
           </View>
 
           <CustomButton title="Crear cuenta" style={greenButtonStyle.greenButton} onPress={() => navigation.navigate('Tabs')} />
 
           <Link style={linkStyle.link} title="¿Ya tienes cuenta? Inicia Sesión" />
         </View>
-    </ImageBackground>
+      </ImageBackground>
+    </KeyboardAwareScrollView>
     
   );
 }
