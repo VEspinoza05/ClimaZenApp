@@ -8,7 +8,7 @@ import { backgroundStyle, cardStyle, titleStyle, inputStyle, greenButtonStyle, c
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function RegisterView({ navigation }) {
-  const [isChecked, setChecked] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [extraScroll, setExtraScroll] = useState(0)
 
   return (
@@ -25,16 +25,36 @@ export default function RegisterView({ navigation }) {
         <View style={cardStyle.card}>
           <Text style={titleStyle.title}>Registrarse</Text>
 
-          <TextInput placeholder="Nombre completo" style={inputStyle.input} onPress={() => setExtraScroll(50)}  />
-          <TextInput placeholder="Correo electrónico" style={inputStyle.input} onPress={() => setExtraScroll(50)}/>
-          <TextInput placeholder="Contraseña" secureTextEntry style={inputStyle.input} onPress={() => setExtraScroll(100)}/>
-          <TextInput placeholder="Confirmar contraseña" secureTextEntry style={inputStyle.input} onPress={() => setExtraScroll(150)} />
+          <TextInput
+            placeholder="Nombre completo"
+            style={inputStyle.input}
+            onPress={() => setExtraScroll(50)}  
+          />
+          <TextInput
+            placeholder="Correo electrónico"
+            style={inputStyle.input}
+            onPress={() => setExtraScroll(50)}
+          />
+          <TextInput
+            placeholder="Contraseña"
+            placeholderTextColor={'#6a6a6a'}
+            secureTextEntry={!passwordVisible}
+            style={inputStyle.input}
+            onPress={() => setExtraScroll(100)}
+          />
+          <TextInput
+            placeholder="Confirmar contraseña"
+            placeholderTextColor={'#6a6a6a'}
+            secureTextEntry={!passwordVisible}
+            style={inputStyle.input}
+            onPress={() => setExtraScroll(150)}
+          />
 
           <View style={checkboxContainerStyle.checkboxContainer}>
             <Checkbox
               style={checkboxStyle.checkbox}
-              value={isChecked}
-              onValueChange={setChecked}
+              value={passwordVisible}
+              onValueChange={setPasswordVisible}
             />
               <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
           </View>
