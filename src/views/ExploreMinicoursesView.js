@@ -16,6 +16,7 @@ export default function ExploreMinicoursesView({navigation}) {
               title="Curso de manualidades con cartón"
               author="Juan"
               image={require('../../assets/carton.jpg')}
+              onPress={() => navigation.navigate('MinicourseDetails')}
           />
         </ScrollView>
     </View>

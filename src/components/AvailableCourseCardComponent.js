@@ -1,8 +1,8 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const AvailableCourseCardComponent = ({ title, author, progress, image }) => {
+const AvailableCourseCardComponent = ({ title, author, progress, image, onPress }) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={styles.row}>
         <Image source={image} style={styles.image} />
         <View style={styles.textContainer}>
@@ -10,7 +10,7 @@ const AvailableCourseCardComponent = ({ title, author, progress, image }) => {
           <Text style={styles.subtitle} numberOfLines={2} ellipsizeMode="tail">Creado por: {author}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
