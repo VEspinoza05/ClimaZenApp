@@ -1,16 +1,37 @@
 import React from 'react';
-import { View, Text, TextInput, ImageBackground, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TextInput, ImageBackground, StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
 import Checkbox from 'expo-checkbox'
 import CustomButton from '../components/CustomButtonComponent'
 import Link from '../components/LinkComponent'
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { backgroundStyle, cardStyle, titleStyle, inputStyle, greenButtonStyle, checkboxContainerStyle, checkboxStyle, checkboxLabelStyle, linkStyle } from "../theme/Style"
+import { supabase } from '../../lib/supabase'
 
 export default function LoginView({ navigation }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const { height: screenHeight } = Dimensions.get('window');
+
+  async function signInWithEmail() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+    if (error) {
+      Alert.alert(error.message)
+      setLoading(false)
+      return false
+    }
+    else {
+      setLoading(false)
+      return true
+    }
+  }
 
   return (
     <KeyboardAwareScrollView
@@ -26,9 +47,20 @@ export default function LoginView({ navigation }) {
         <View style={cardStyle.card}>
           <Text style={titleStyle.title}>Iniciar Sesión</Text>
 
-          <TextInput placeholder="Correo electrónico" placeholderTextColor={'#6a6a6a'} style={inputStyle.input} />
+          <TextInput
+            placeholder="Correo electrónico"
+            placeholderTextColor={'#6a6a6a'}
+            style={inputStyle.input}
+            onChangeText={(text) => setEmail(text)}
+          />
 
-          <TextInput placeholder="Contraseña" placeholderTextColor={'#6a6a6a'} secureTextEntry={!passwordVisible} style={inputStyle.input} />
+          <TextInput
+            placeholder="Contraseña"
+            placeholderTextColor={'#6a6a6a'}
+            secureTextEntry={!passwordVisible}
+            style={inputStyle.input}
+            onChangeText={(text) => setPassword(text)}
+          />
 
           <View style={checkboxContainerStyle.checkboxContainer}>
             <Checkbox
@@ -39,7 +71,17 @@ export default function LoginView({ navigation }) {
             <Text style={checkboxLabelStyle.checkboxLabel}>Mostrar Contraseña</Text>
           </View>
 
-          <CustomButton title="Entrar" style={greenButtonStyle.greenButton} onPress={() => navigation.navigate('Tabs')}/>
+          <CustomButton
+            title="Entrar"
+            style={greenButtonStyle.greenButton}
+            disabled={loading}
+            onPress={async () => {
+              let result = await signInWithEmail()
+              if(result) {
+                navigation.navigate('Tabs')
+              }
+            }}
+          />
 
           <Link style={linkStyle.link} title="¿No tienes cuenta? Registrate" />
           
