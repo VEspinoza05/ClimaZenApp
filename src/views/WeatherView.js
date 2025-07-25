@@ -1,9 +1,45 @@
-import { Text, View, StyleSheet, FlatList } from "react-native"
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator } from "react-native"
 import { secondTitleScreenStyle } from "../theme/Style";
 import WeatherStatus from "../components/WeatherStatusComponent";
 import EventAndWeather from '../components/EventAndWeatherComponent';
+import getWeatherFromSupabase from "../services/WeatherService";
+import * as Location from 'expo-location';
 
 export default function WeatherView({navigation}) {
+  const [weatherData, setWeatherData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Permiso de ubicación denegado');
+        return null;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      return {
+        lat: location.coords.latitude,
+        lon: location.coords.longitude,
+      };
+    };
+
+    const fetchWeather = async () => {
+      try {
+        const coords = await getLocation();
+        const data = await getWeatherFromSupabase(coords.lat, coords.lon);
+        setWeatherData(data);
+      } catch (error) {
+        console.error('Error al obtener el clima:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, []);
+
   const DATA = [
     {id: 1, title:'Reunión Familiar', hour:'7:00 pm', prediction:'0% de lluvia', weatherReminder:'¡Lleva tu Sueter!', imagePath:require('../../assets/halfMoon.png')},
     {id: 2, title:'Reunión Familiar', hour:'8:00 pm', prediction:'0% de lluvia', weatherReminder:'¡Lleva tu Sueter!', imagePath:require('../../assets/halfMoon.png')},
@@ -17,12 +53,12 @@ export default function WeatherView({navigation}) {
           <View>
             <View style={styles.componentContainer}>
               <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Clima Actual</Text>
-              <WeatherStatus
-                hour={'12:30 pm'}
-                weatherStatus={'Soleado 25°'}
-                prediction={'0% de lluvia'}
-                weatherImage={require('../../assets/sun.png')}
-              />
+              {loading ? (
+                <ActivityIndicator size="large" color="#007aff" />
+              ) : (
+                <WeatherStatus weather={weatherData} />
+              )}
+
             </View>
             <View style={styles.componentContainer}>
               <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Proximo Evento</Text>

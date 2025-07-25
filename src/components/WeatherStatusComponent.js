@@ -1,15 +1,23 @@
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const WeatherStatusComponent = ({ hour, weatherStatus, prediction, weatherImage }) => {
+const WeatherStatusComponent = ({ weather }) => {
+  if (!weather) return null;
+
+  const { name, main, weather: weatherArr } = weather;
+  const { temp } = main;
+  const { description, icon } = weatherArr[0];
+
+  const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
   return (
     <View style={styles.card}>
       <View style={styles.row}>
         <View style={styles.textContainer}>
-          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">Hora: {hour}</Text>
-          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{weatherStatus}</Text>
-          <Text style={styles.subtitle} numberOfLines={1} ellipsizeMode="tail">Prediccion: {prediction}</Text>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{name}</Text>
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{temp} °C</Text>
+          <Text style={styles.subtitle} numberOfLines={1} ellipsizeMode="tail">{description}</Text>
         </View>
-         <Image source={weatherImage} style={styles.image} />
+         <Image source={{ uri: iconUrl }} style={styles.image} />
       </View>
     </View>
   );
