@@ -1,4 +1,4 @@
-import { supabase } from '../../lib/supabase'; // tu configuración supabase
+import { supabase } from '../lib/supabase'; // tu configuración supabase
 
 const getWeatherFromSupabase = async (lat, lon) => {
   try {
