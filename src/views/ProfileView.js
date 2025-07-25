@@ -4,8 +4,15 @@ import CustomButton from '../components/CustomButtonComponent'
 import { greenButtonStyle } from '../theme/Style';
 import IconLabelOption from '../components/IconLabelOptionComponent'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { supabase } from '../lib/supabase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileView = () => {
+const ProfileView = ({navigation}) => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    await AsyncStorage.removeItem('session');
+  };
+
   return (
     <View style={styles.displayContainer}>
       <View style={styles.optionsContainer}>
@@ -45,7 +52,11 @@ const ProfileView = () => {
           />
         </View>
       </View>
-      <CustomButton title="Cerrar sesion" style={greenButtonStyle.greenButton} />
+      <CustomButton
+        title="Cerrar sesion"
+        style={greenButtonStyle.greenButton}
+        onPress={(handleLogout)}
+      />
     </View>
   );
 };
