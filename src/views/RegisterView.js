@@ -6,7 +6,7 @@ import Link from '../components/LinkComponent'
 import { useState } from 'react';
 import { backgroundStyle, cardStyle, titleStyle, inputStyle, greenButtonStyle, checkboxContainerStyle, checkboxStyle, checkboxLabelStyle, linkStyle } from "../theme/Style"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { supabase } from '../../lib/supabase'
+import { supabase } from '../lib/supabase'
 
 export default function RegisterView({ navigation }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,15 +17,16 @@ export default function RegisterView({ navigation }) {
   const [loading, setLoading] = useState(false)
   const [username, setUsername] = useState('')
 
-  async function signUpWithEmail() {
-    setLoading(true)
+  const handleSignUp = async () => {
+    setLoading(true);
 
     if(password !== confirmationPassword) {
-      Alert.alert("Passwords does not match")
-      return false;
+      Alert.alert("Passwords do not match");
+      setLoading(false)
+      return;
     }
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
@@ -35,16 +36,13 @@ export default function RegisterView({ navigation }) {
       }
     })
 
-    if (error){
-      Alert.alert(error.message)
-      setLoading(false)
-      return false
+    setLoading(false)
+
+    if (error) {
+      Alert.alert('Error', error.message);
+      return;
     }
-    else {
-      setLoading(false)
-      return true
-    }
-  }
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -101,12 +99,7 @@ export default function RegisterView({ navigation }) {
           <CustomButton
             title="Crear cuenta"
             style={greenButtonStyle.greenButton}
-            onPress={async () => {
-              let result = await signUpWithEmail()
-              if(result) {
-                navigation.navigate('Tabs')
-              }
-            }}
+            onPress={handleSignUp}
             disabled={loading}
           />
 
