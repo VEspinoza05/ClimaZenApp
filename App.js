@@ -1,8 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
+import { View, ActivityIndicator } from 'react-native';
+import { useAuth } from './src/hooks/useAuth';
 import AppNavigator from './src/navigation/AppNavigator';
 import { useFonts, OpenSans_400Regular, OpenSans_700Bold, OpenSans_800ExtraBold } from '@expo-google-fonts/open-sans'
 
 export default function App() {
+  const { session, loading } = useAuth();
+
   const [fontsLoaded] = useFonts({
     OpenSans_400Regular,
     OpenSans_700Bold,
@@ -13,9 +17,15 @@ export default function App() {
     return null;
   }
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <AppNavigator session={session} />
   );
 }

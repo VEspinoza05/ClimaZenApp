@@ -6,7 +6,7 @@ import Link from '../components/LinkComponent'
 import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { backgroundStyle, cardStyle, titleStyle, inputStyle, greenButtonStyle, checkboxContainerStyle, checkboxStyle, checkboxLabelStyle, linkStyle } from "../theme/Style"
-import { supabase } from '../../lib/supabase'
+import { supabase } from '../lib/supabase'
 
 export default function LoginView({ navigation }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -16,22 +16,20 @@ export default function LoginView({ navigation }) {
 
   const { height: screenHeight } = Dimensions.get('window');
 
-  async function signInWithEmail() {
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
+  const handleLogin = async () => {
+    setLoading(true);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
     if (error) {
-      Alert.alert(error.message)
-      setLoading(false)
-      return false
+      Alert.alert('Error', error.message);
     }
-    else {
-      setLoading(false)
-      return true
-    }
-  }
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -75,12 +73,7 @@ export default function LoginView({ navigation }) {
             title="Entrar"
             style={greenButtonStyle.greenButton}
             disabled={loading}
-            onPress={async () => {
-              let result = await signInWithEmail()
-              if(result) {
-                navigation.navigate('Tabs')
-              }
-            }}
+            onPress={handleLogin}
           />
 
           <Link style={linkStyle.link} title="¿No tienes cuenta? Registrate" />
