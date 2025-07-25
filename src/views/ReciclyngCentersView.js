@@ -1,18 +1,74 @@
-import { Text, View, StyleSheet } from "react-native";
-import MapView from "react-native-maps";
+import { Text, View, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import MapView, {Marker, Circle} from "react-native-maps";
 import Slider from '@react-native-community/slider';
 import CustomButton from '../components/CustomButtonComponent'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { greenButtonStyle } from '../theme/Style'
+import * as Location from "expo-location";
+import React from "react";
 
 export default function ReciclyngCentersView() {
-    const [radiusValue, setRadiusValue] = useState(0);
+  const [radiusValue, setRadiusValue] = useState(0);
+  const [location, setLocation] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== 'granted') {
+        Alert.alert('Permiso denegado', 'Se necesita el permiso de ubicación para usar esta función.');
+        return;
+      }
+
+      const userLocation = await Location.getCurrentPositionAsync({});
+      setLocation({
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
+      });
+      setLoading(false);
+    })();
+  }, []);
+
+  const handleMarkerDrag = (e) => {
+    const { latitude, longitude } = e.nativeEvent.coordinate;
+    setLocation({ latitude, longitude });
+  };
+
+  if (loading || !location) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text>Obteniendo ubicación...</Text>
+      </View>
+    );
+  }
+
+  console.log('Ubicacion', `lat: ${location.latitude}, lon: ${location.latitude}, radius: ${radiusValue}`)
 
     return(
         <View style={styles.screen}>
             <MapView
-                style={styles.map}
-            />
+              style={styles.map}
+              region={{
+                ...location,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}
+            >
+              <Marker
+                coordinate={location}
+                draggable
+                onDragEnd={handleMarkerDrag}
+              />
+              <Circle
+                center={location}
+                radius={radiusValue}
+                strokeWidth={1}
+                strokeColor="rgba(0,112,255,0.6)"
+                fillColor="rgba(0,112,255,0.2)"
+              />
+            </MapView>
             <Text style={styles.sliderLabel}>Radio: {radiusValue}</Text>
             <Slider
                 style={styles.slider}
