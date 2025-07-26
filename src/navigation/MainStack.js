@@ -11,6 +11,7 @@ import TaskAddingView from '../views/TaskAddingView';
 import SuggestedTasksView from '../views/SuggestedTasksView';
 import LessonView from '../views/LessonView';
 import MinicourseDetailsView from '../views/MinicourseDetailsView';
+import ReciclyngCentersView from '../views/ReciclyngCentersView';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ export default function MainStack() {
     <Stack.Navigator
       initialRouteName="Tabs"
       screenOptions={{ 
-        headerShown: false,
+        headerShown: true,
         headerStyle: { backgroundColor: '#3ca380', }, 
         headerTitleStyle: {
           fontFamily: 'OpenSans_800ExtraBold',
@@ -109,6 +110,13 @@ export default function MainStack() {
         options={{
           headerShown: true,
           title: 'Aprendizaje'
+        }}
+      />
+      <Stack.Screen
+        name='LocationPicker'
+        component={ReciclyngCentersView}
+        options={{
+          title:'Ubicación'
         }}
       />
     </Stack.Navigator>
