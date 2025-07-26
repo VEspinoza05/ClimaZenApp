@@ -7,10 +7,15 @@ import { greenButtonStyle } from '../theme/Style'
 import * as Location from "expo-location";
 import React from "react";
 
-export default function ReciclyngCentersView() {
+export default function ReciclyngCentersView({navigation}) {
   const [radiusValue, setRadiusValue] = useState(0);
   const [location, setLocation] = useState(null)
   const [loading, setLoading] = useState(true)
+
+  const state = navigation.getState();
+  const routes = state.routes;
+  const currentRouteIndex = state.index;
+  const previousRoute = routes[currentRouteIndex - 1];
 
   useEffect(() => {
     (async () => {
@@ -82,8 +87,13 @@ export default function ReciclyngCentersView() {
                 thumbTintColor='#3ca380'
             />
             <CustomButton
-                title={'Recordarme reciclar'}
+                title={previousRoute.name === 'EventAdding' ? 'Seleccionar' : 'Recordarme reciclar' }
                 style={[greenButtonStyle.greenButton, styles.reminderButton]}
+                onPress={() => {
+                  if(previousRoute.name === 'EventAdding') {
+                    navigation.goBack();
+                  }
+                }}
             />
         </View>
     )

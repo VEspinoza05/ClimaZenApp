@@ -6,7 +6,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { useState } from "react";
 import CustomButtonComponent from "../components/CustomButtonComponent";
 
-export default function EventAddingView() {
+export default function EventAddingView({navigation}) {
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState( new Date() )
     const [showDateSelector, setShowDateSelector] = useState(false);
@@ -82,7 +82,10 @@ export default function EventAddingView() {
                         onChange={onChangeTimeSelector}
                     />
                 )}
-                <Pressable style={[inputStyle.input, styles.locationInput]} >
+                <Pressable
+                  style={[inputStyle.input, styles.locationInput]}
+                  onPress={() => navigation.navigate('LocationPicker')}
+                >
                     <Entypo name="location-pin" size={24} color={'#6a6a6a'} />
                     <Text style={[styles.pressableLabel]}>
                         Ubicación
