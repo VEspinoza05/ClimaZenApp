@@ -4,13 +4,12 @@ import Slider from '@react-native-community/slider';
 import CustomButton from '../components/CustomButtonComponent'
 import { useState, useEffect } from "react";
 import { greenButtonStyle } from '../theme/Style'
-import * as Location from "expo-location";
-import React from "react";
+import { useCurrentLocation } from '../hooks/useCurrentLocation'
 
 export default function ReciclyngCentersView({navigation}) {
   const [radiusValue, setRadiusValue] = useState(0);
-  const [location, setLocation] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const {location, loading, errorMsg} = useCurrentLocation();
+  const [markedLocation, setMarkedLocation] = useState(null);
 
   const state = navigation.getState();
   const routes = state.routes;
@@ -18,29 +17,18 @@ export default function ReciclyngCentersView({navigation}) {
   const previousRoute = routes[currentRouteIndex - 1];
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted') {
-        Alert.alert('Permiso denegado', 'Se necesita el permiso de ubicación para usar esta función.');
-        return;
-      }
-
-      const userLocation = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: userLocation.coords.latitude,
-        longitude: userLocation.coords.longitude,
-      });
-      setLoading(false);
-    })();
-  }, []);
+    if (location && !markedLocation) {
+      setMarkedLocation(location);
+    }
+  }, [location]); 
 
   const handleMarkerDrag = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
-    setLocation({ latitude, longitude });
+    setMarkedLocation({ latitude, longitude });
+    console.log('Ubicacion', `lat: ${latitude}, lon: ${longitude}, radius: ${radiusValue}`)
   };
 
-  if (loading || !location) {
+  if (loading || !location || !markedLocation) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#007AFF" />
@@ -49,25 +37,23 @@ export default function ReciclyngCentersView({navigation}) {
     );
   }
 
-  console.log('Ubicacion', `lat: ${location.latitude}, lon: ${location.latitude}, radius: ${radiusValue}`)
-
     return(
         <View style={styles.screen}>
             <MapView
               style={styles.map}
               region={{
-                ...location,
+                ...markedLocation,
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01,
               }}
             >
               <Marker
-                coordinate={location}
+                coordinate={markedLocation}
                 draggable
                 onDragEnd={handleMarkerDrag}
               />
               <Circle
-                center={location}
+                center={markedLocation}
                 radius={radiusValue}
                 strokeWidth={1}
                 strokeColor="rgba(0,112,255,0.6)"

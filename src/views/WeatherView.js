@@ -4,36 +4,21 @@ import { secondTitleScreenStyle } from "../theme/Style";
 import WeatherStatus from "../components/WeatherStatusComponent";
 import EventAndWeather from '../components/EventAndWeatherComponent';
 import getWeatherFromSupabase from "../services/WeatherService";
-import * as Location from 'expo-location';
+import { useCurrentLocation } from '../hooks/useCurrentLocation';
 
 export default function WeatherView({navigation}) {
   const [weatherData, setWeatherData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const {location, loading, errorMsg} = useCurrentLocation();
 
   useEffect(() => {
-    const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Permiso de ubicación denegado');
-        return null;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      return {
-        lat: location.coords.latitude,
-        lon: location.coords.longitude,
-      };
-    };
-
     const fetchWeather = async () => {
       try {
-        const coords = await getLocation();
-        const data = await getWeatherFromSupabase(coords.lat, coords.lon);
+        if (!location) return; 
+
+        const data = await getWeatherFromSupabase(location.latitude, location.longitude);
         setWeatherData(data);
       } catch (error) {
         console.error('Error al obtener el clima:', error);
-      } finally {
-        setLoading(false);
       }
     };
 
