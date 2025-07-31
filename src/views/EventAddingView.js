@@ -3,8 +3,9 @@ import { inputStyle } from "../theme/Style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import CustomButtonComponent from "../components/CustomButtonComponent";
+import { LocationContext } from "../contexts/LocationContext";
 
 export default function EventAddingView({navigation}) {
     const [date, setDate] = useState(new Date());
@@ -13,11 +14,16 @@ export default function EventAddingView({navigation}) {
     const [showTimeSelector, setShowTimeSelector] = useState(false)
     const [isDateSelected, setIsDateSelected] = useState(false)
     const [isTimeSelected, setIsTimeSelected] = useState(false)
+    const { locationObj, setLocationObj } = useContext(LocationContext);
 
     const timeOptions = {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true
+    }
+
+    const handleGoToLocationPicker = () => {
+      navigation.navigate('LocationPicker')
     }
 
     const onChangeDateSelector = (event, selectedDate) => {
@@ -41,6 +47,8 @@ export default function EventAddingView({navigation}) {
         setIsTimeSelected(true);
         setTime(selectedTime);
     };
+
+    console.log('Direccion: ', JSON.stringify(locationObj))
 
     return(
         <View style={styles.screen}>
@@ -84,11 +92,11 @@ export default function EventAddingView({navigation}) {
                 )}
                 <Pressable
                   style={[inputStyle.input, styles.locationInput]}
-                  onPress={() => navigation.navigate('LocationPicker')}
+                  onPress={handleGoToLocationPicker}
                 >
                     <Entypo name="location-pin" size={24} color={'#6a6a6a'} />
-                    <Text style={[styles.pressableLabel]}>
-                        Ubicación
+                    <Text style={[styles.pressableLabel, (locationObj && {color: 'black'}) ]}>
+                      { locationObj ? locationObj.address : 'Ubicación'}
                     </Text>
                 </Pressable>
             </View>

@@ -2,13 +2,15 @@ import { Text, View, StyleSheet, ActivityIndicator, Alert } from "react-native";
 import MapView, {Marker, Circle} from "react-native-maps";
 import Slider from '@react-native-community/slider';
 import CustomButton from '../components/CustomButtonComponent'
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { greenButtonStyle } from '../theme/Style'
 import { useCurrentLocation } from '../hooks/useCurrentLocation'
 import { reverseGeocodeAsync } from "expo-location";
+import { LocationContext } from "../contexts/LocationContext";
 
 export default function ReciclyngCentersView({navigation}) {
-  const [radiusValue, setRadiusValue] = useState(0);
+  const { locationObj, setLocationObj } = useContext(LocationContext);
+  const [radiusValue, setRadiusValue] = useState(100);
   const {location, loading, errorMsg} = useCurrentLocation();
   const [markedLocation, setMarkedLocation] = useState(null);
   const [address, setAddress] = useState('');
@@ -48,6 +50,16 @@ export default function ReciclyngCentersView({navigation}) {
     setMarkedLocation({ latitude, longitude });
     console.log('Ubicacion', `lat: ${latitude}, lon: ${longitude}, radius: ${radiusValue}`)
   };
+
+  const handleReturnToEventAdd = () => {
+    setLocationObj({
+      coordinates: markedLocation,
+      radius: radiusValue,
+      address: address,
+    })
+
+    navigation.goBack()
+  }
 
   if (loading || !location || !markedLocation) {
     return (
@@ -97,11 +109,7 @@ export default function ReciclyngCentersView({navigation}) {
             <CustomButton
                 title={previousRoute.name === 'EventAdding' ? 'Seleccionar' : 'Recordarme reciclar' }
                 style={[greenButtonStyle.greenButton, styles.reminderButton]}
-                onPress={() => {
-                  if(previousRoute.name === 'EventAdding') {
-                    navigation.goBack();
-                  }
-                }}
+                onPress={previousRoute.name === 'EventAdding' ? handleReturnToEventAdd : undefined }
             />
         </View>
     )

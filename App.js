@@ -3,6 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { useAuth } from './src/hooks/useAuth';
 import AppNavigator from './src/navigation/AppNavigator';
 import { useFonts, OpenSans_400Regular, OpenSans_700Bold, OpenSans_800ExtraBold } from '@expo-google-fonts/open-sans'
+import { LocationProvider } from './src/contexts/LocationContext';
 
 export default function App() {
   const { session, loading } = useAuth();
@@ -26,6 +27,8 @@ export default function App() {
   }
 
   return (
-    <AppNavigator session={session} />
+    <LocationProvider>
+      <AppNavigator session={session} />
+    </LocationProvider>
   );
 }
