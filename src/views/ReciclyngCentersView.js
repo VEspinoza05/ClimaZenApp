@@ -5,11 +5,14 @@ import CustomButton from '../components/CustomButtonComponent'
 import { useState, useEffect } from "react";
 import { greenButtonStyle } from '../theme/Style'
 import { useCurrentLocation } from '../hooks/useCurrentLocation'
+import { reverseGeocodeAsync } from "expo-location";
 
 export default function ReciclyngCentersView({navigation}) {
   const [radiusValue, setRadiusValue] = useState(0);
   const {location, loading, errorMsg} = useCurrentLocation();
   const [markedLocation, setMarkedLocation] = useState(null);
+  const [address, setAddress] = useState('');
+  const [loadingAddress, setLoadingAddress] = useState(false)
 
   const state = navigation.getState();
   const routes = state.routes;
@@ -21,6 +24,24 @@ export default function ReciclyngCentersView({navigation}) {
       setMarkedLocation(location);
     }
   }, [location]); 
+
+  useEffect(() => {
+    (async () => {
+      if(!markedLocation) return
+
+      setLoadingAddress(true)
+
+      try {
+        const reverseCodedAddress = await reverseGeocodeAsync(markedLocation);
+        setAddress(reverseCodedAddress[0].formattedAddress);
+        console.log(reverseCodedAddress[0].formattedAddress);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setLoadingAddress(false)
+      }
+    })();
+  },[markedLocation])
 
   const handleMarkerDrag = (e) => {
     const { latitude, longitude } = e.nativeEvent.coordinate;
@@ -60,6 +81,7 @@ export default function ReciclyngCentersView({navigation}) {
                 fillColor="rgba(0,112,255,0.2)"
               />
             </MapView>
+            <Text style={styles.addressLabel}>{loadingAddress ? 'Cargando...' : address}</Text>
             <Text style={styles.sliderLabel}>Radio: {radiusValue}</Text>
             <Slider
                 style={styles.slider}
@@ -107,5 +129,9 @@ const styles = StyleSheet.create({
   },
   reminderButton: {
     marginVertical: 0,
+  },
+  addressLabel: {
+    fontSize: 16,
+    fontFamily: 'OpenSans_700Bold',
   }
 })
