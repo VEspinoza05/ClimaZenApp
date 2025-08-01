@@ -23,7 +23,7 @@ export default function WeatherView({navigation}) {
     };
 
     fetchWeather();
-  }, []);
+  }, [location]);
 
   const DATA = [
     {id: 1, title:'Reunión Familiar', hour:'7:00 pm', prediction:'0% de lluvia', weatherReminder:'¡Lleva tu Sueter!', imagePath:require('../../assets/halfMoon.png')},
