@@ -3,7 +3,7 @@ import { inputStyle } from "../theme/Style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import CustomButtonComponent from "../components/CustomButtonComponent";
 import { LocationContext } from "../contexts/LocationContext";
 
@@ -21,6 +21,14 @@ export default function EventAddingView({navigation}) {
       minute: 'numeric',
       hour12: true
     }
+
+    useEffect(() => {
+      const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+        setLocationObj(null)
+      });
+
+      return unsubscribe;
+    }, [navigation]);
 
     const handleGoToLocationPicker = () => {
       navigation.navigate('LocationPicker')
@@ -105,6 +113,9 @@ export default function EventAddingView({navigation}) {
                     title={'Cancelar'}
                     textStyle={styles.cancelButtonText}
                     style={styles.cancelButton}
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
                 />
                 <CustomButtonComponent
                     title={'Guardar'}
