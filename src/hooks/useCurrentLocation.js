@@ -1,12 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import * as Location from 'expo-location';
+import { LocationContext } from '../contexts/LocationContext';
 
 export function useCurrentLocation() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { locationObj, setLocationObj } = useContext(LocationContext);
 
   useEffect(() => {
+    if (locationObj) {
+      setLoading(false)
+      setLocation(locationObj.coordinates)
+      return
+    };
+
     (async () => {
       try {
         setLoading(true);
@@ -28,7 +36,7 @@ export function useCurrentLocation() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [locationObj]);
 
   return { location, errorMsg, loading };
 }

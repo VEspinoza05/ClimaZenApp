@@ -10,10 +10,10 @@ import { LocationContext } from "../contexts/LocationContext";
 
 export default function ReciclyngCentersView({navigation}) {
   const { locationObj, setLocationObj } = useContext(LocationContext);
-  const [radiusValue, setRadiusValue] = useState(100);
+  const [radiusValue, setRadiusValue] = useState(locationObj ? locationObj.radius : 100);
   const {location, loading, errorMsg} = useCurrentLocation();
-  const [markedLocation, setMarkedLocation] = useState(null);
-  const [address, setAddress] = useState('');
+  const [markedLocation, setMarkedLocation] = useState(locationObj ? locationObj.coordinates : null);
+  const [address, setAddress] = useState(locationObj ? locationObj.address : '');
   const [loadingAddress, setLoadingAddress] = useState(false)
 
   const state = navigation.getState();
