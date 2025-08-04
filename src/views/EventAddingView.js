@@ -6,8 +6,12 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { useState, useContext, useEffect } from "react";
 import CustomButtonComponent from "../components/CustomButtonComponent";
 import { LocationContext } from "../contexts/LocationContext";
+import { EventModel } from "../models/EventModel";
+import { CreateEvent } from "../services/EventsService";
+import { useAuth } from "../hooks/useAuth";
 
 export default function EventAddingView({navigation}) {
+    const [title, setTitle] = useState('')
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState( new Date() )
     const [showDateSelector, setShowDateSelector] = useState(false);
@@ -15,6 +19,7 @@ export default function EventAddingView({navigation}) {
     const [isDateSelected, setIsDateSelected] = useState(false)
     const [isTimeSelected, setIsTimeSelected] = useState(false)
     const { locationObj, setLocationObj } = useContext(LocationContext);
+    const { session, loading } = useAuth()
 
     const timeOptions = {
       hour: 'numeric',
@@ -53,10 +58,42 @@ export default function EventAddingView({navigation}) {
         }
         
         setIsTimeSelected(true);
+        
         setTime(selectedTime);
     };
 
-    console.log('Direccion: ', JSON.stringify(locationObj))
+    const handleSubmit = async () => {
+      const event = new EventModel({
+        title: title,
+        date: date,
+        time: getCurrentTimeWithTimezone(time),
+        user_id:  session.user.id,
+        latitude: locationObj ? locationObj.coordinates.latitude : null,
+        longitude: locationObj ? locationObj.coordinates.longitude : null,
+        radius: locationObj ? locationObj.radius : null,
+      })
+
+      await CreateEvent(event)
+    }
+
+    function getCurrentTimeWithTimezone(date) {
+      const time = date.toTimeString().split(' ')[0];
+      const tzOffset = getTimezoneOffsetString();
+      return `${time}${tzOffset}`;
+    }
+
+    function getTimezoneOffsetString() {
+      const offset = new Date().getTimezoneOffset();
+      const absOffset = Math.abs(offset);
+      const hours = String(Math.floor(absOffset / 60)).padStart(2, '0');
+      const minutes = String(absOffset % 60).padStart(2, '0');
+      const sign = offset <= 0 ? '+' : '-';
+      return `${sign}${hours}:${minutes}`;
+    }
+
+    if (loading || !session) {
+      return null
+    }
 
     return(
         <View style={styles.screen}>
@@ -65,6 +102,7 @@ export default function EventAddingView({navigation}) {
                     multiline={true}
                     placeholder="Titulo"
                     style={[inputStyle.input, styles.titleInput]}
+                    onChangeText={(text) => setTitle(text)}
                 />
                 <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
                     <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />
@@ -121,6 +159,7 @@ export default function EventAddingView({navigation}) {
                     title={'Guardar'}
                     style={styles.disabledSaveButton}
                     textStyle={styles.saveButtonText}
+                    onPress={handleSubmit}
                 />
             </View>
         </View>
