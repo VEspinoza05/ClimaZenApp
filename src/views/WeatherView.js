@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator } from "react-native"
+import { Text, View, StyleSheet, FlatList, ActivityIndicator, Pressable } from "react-native"
 import { secondTitleScreenStyle } from "../theme/Style";
 import WeatherStatus from "../components/WeatherStatusComponent";
 import EventAndWeather from '../components/EventAndWeatherComponent';
 import getWeatherFromSupabase from "../services/WeatherService";
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { GetAllEvents } from '../services/EventsService';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { inputStyle } from "../theme/Style"
 
 export default function WeatherView({navigation}) {
   const [weatherData, setWeatherData] = useState(null);
@@ -13,6 +16,7 @@ export default function WeatherView({navigation}) {
   const [events, setEvents] = useState([])
   const [loadingEvents, setLoadingEvents] = useState(true)
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [showDateSelector, setShowDateSelector] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -21,7 +25,7 @@ export default function WeatherView({navigation}) {
       setEvents(eventsList)
       setLoadingEvents(false)
     })();
-  }, [events])
+  }, [events, currentDate])
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -45,7 +49,17 @@ export default function WeatherView({navigation}) {
     minutes = (minutes < 10) ? '0' + minutes : minutes;
     return `${hours}:${minutes} ${period}`;
   }
-  
+
+  const onChangeDateSelector = (event, selectedDate) => {
+    setShowDateSelector(false);
+
+    if (event?.type === 'dismissed' ) {
+      return;
+    }
+
+    setCurrentDate(selectedDate);
+  };
+
   return(
     <View style={styles.screen}>
       <FlatList style={{paddingHorizontal: 20}}
@@ -72,6 +86,24 @@ export default function WeatherView({navigation}) {
               />
             </View>
             <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.moreEventsTitle]}>Más Eventos</Text>
+            <Pressable style={[inputStyle.input, styles.dateInput]}
+              onPress={() => setShowDateSelector(true)}
+            >
+              <FontAwesome name='calendar' size={24} color='#6a6a6a' />
+              <Text style={[styles.pressableLabel, {color: 'black'} ]}>
+                {currentDate.toDateString()}
+              </Text>
+            </Pressable>
+              {showDateSelector && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={currentDate}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeDateSelector}
+                />
+              )}
           </View>
         )}
 
@@ -167,5 +199,16 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 0,
     paddingHorizontal: 12,
+  },
+  pressableLabel: {
+    fontSize: 18,   
+    fontFamily: 'OpenSans_400Regular',
+    color: '#6a6a6a',
+  },
+  dateInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    borderRadius: 12,
   },
 });
