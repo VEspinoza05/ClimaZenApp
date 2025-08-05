@@ -1,12 +1,13 @@
 import { supabase } from '../lib/supabase'
 
-export const GetAllEvents = async () => {
+export const GetAllEvents = async (date) => {
   const { data, error } = await supabase
     .from('event')
     .select('*')
+    .eq('date', date.toISOString().split('T')[0])
 
   if(error) {
-    console.log(error.message)
+    console.log('GetAllEvents error: ', error.message)
     return null
   }
   else {

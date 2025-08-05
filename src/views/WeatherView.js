@@ -12,11 +12,12 @@ export default function WeatherView({navigation}) {
   const {location, loading, errorMsg} = useCurrentLocation();
   const [events, setEvents] = useState([])
   const [loadingEvents, setLoadingEvents] = useState(true)
+  const [currentDate, setCurrentDate] = useState(new Date())
 
   useEffect(() => {
     (async () => {
       setLoadingEvents(true)
-      const eventsList = await GetAllEvents()
+      const eventsList = await GetAllEvents(currentDate)
       setEvents(eventsList)
       setLoadingEvents(false)
     })();
@@ -44,7 +45,7 @@ export default function WeatherView({navigation}) {
     minutes = (minutes < 10) ? '0' + minutes : minutes;
     return `${hours}:${minutes} ${period}`;
   }
-
+  
   return(
     <View style={styles.screen}>
       <FlatList style={{paddingHorizontal: 20}}
