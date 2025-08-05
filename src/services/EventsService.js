@@ -1,5 +1,19 @@
 import { supabase } from '../lib/supabase'
 
+export const GetAllEvents = async () => {
+  const { data, error } = await supabase
+    .from('event')
+    .select('*')
+
+  if(error) {
+    console.log(error.message)
+    return null
+  }
+  else {
+    return data
+  }
+}
+
 export const CreateEvent = async (EventModel) => {
   const { error } = await supabase
     .from('event')

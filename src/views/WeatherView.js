@@ -5,10 +5,22 @@ import WeatherStatus from "../components/WeatherStatusComponent";
 import EventAndWeather from '../components/EventAndWeatherComponent';
 import getWeatherFromSupabase from "../services/WeatherService";
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
+import { GetAllEvents } from '../services/EventsService';
 
 export default function WeatherView({navigation}) {
   const [weatherData, setWeatherData] = useState(null);
   const {location, loading, errorMsg} = useCurrentLocation();
+  const [events, setEvents] = useState([])
+  const [loadingEvents, setLoadingEvents] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      setLoadingEvents(true)
+      const eventsList = await GetAllEvents()
+      setEvents(eventsList)
+      setLoadingEvents(false)
+    })();
+  }, [events])
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -25,11 +37,13 @@ export default function WeatherView({navigation}) {
     fetchWeather();
   }, [location]);
 
-  const DATA = [
-    {id: 1, title:'Reunión Familiar', hour:'7:00 pm', prediction:'0% de lluvia', weatherReminder:'¡Lleva tu Sueter!', imagePath:require('../../assets/halfMoon.png')},
-    {id: 2, title:'Reunión Familiar', hour:'8:00 pm', prediction:'0% de lluvia', weatherReminder:'¡Lleva tu Sueter!', imagePath:require('../../assets/halfMoon.png')},
-    {id: 3, title:'Reunión Familiar', hour:'9:00 pm', prediction:'0% de lluvia', weatherReminder:'¡Lleva tu Sueter!', imagePath:require('../../assets/halfMoon.png')},
-  ]
+  function convert24to12Hour(time24) {
+    let [hours, minutes] = time24.split(':').map(Number);
+    let period = (hours >= 12) ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    minutes = (minutes < 10) ? '0' + minutes : minutes;
+    return `${hours}:${minutes} ${period}`;
+  }
 
   return(
     <View style={styles.screen}>
@@ -63,27 +77,31 @@ export default function WeatherView({navigation}) {
         renderItem={({item, index}) => (
           <EventAndWeather
             title={item.title}
-            hour={item.hour}
-            prediction={item.prediction}
-            weatherReminder={item.weatherReminder}
-            weatherImage={item.imagePath}
+            hour={convert24to12Hour(item.time)}
+            prediction={''}
+            weatherReminder={''}
+            weatherImage={require('../../assets/cloudWithRain.png')}
             cardStyle={[
               styles.verticalBorders,
               styles.enventAndWeatherCard,
               (
                 index === 0 ? styles.firstItemBorder : 
-                index === DATA.length - 1 ? styles.lastItemBorder :
+                index === events.length - 1 ? styles.lastItemBorder :
                 styles.noTopAndBottomBorders
               ),
-              index !== DATA.length - 1 ? styles.noUsePaddingBottom : undefined,
+              index !== events.length - 1 ? styles.noUsePaddingBottom : undefined,
             ]}
-            useSeparator={index === DATA.length - 1 ? false : true}
+            useSeparator={index === events.length - 1 ? false : true}
           />
         )}
 
+        ListEmptyComponent={() => {
+          loadingEvents ? <ActivityIndicator size="large" color="#0000ff" /> : null
+        }}
+
         keyExtractor={item => item.id}
 
-        data={DATA}
+        data={events}
       />
 
     </View>
