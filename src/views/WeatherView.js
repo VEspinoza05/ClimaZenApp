@@ -113,14 +113,21 @@ export default function WeatherView({navigation}) {
             </View>
             <View style={styles.componentContainer}>
               <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Proximo Evento de hoy</Text>
-              <EventAndWeather
-                title={nextEvent ? nextEvent.title : 'nothing'}
-                hour={nextEvent ? convert24to12Hour(nextEvent.time) : 'nothing'}
-                prediction={''}
-                weatherReminder={''}
-                weatherImage={require('../../assets/cloudWithRain.png')}
-                cardStyle={styles.enventAndWeatherCard}
-              />
+              {loadingEvents ? (
+                <ActivityIndicator size="large" color="#007aff" />
+              ) : !nextEvent ? (
+                <Text>No hay evento disponible</Text>
+              ) : (
+                <EventAndWeather
+                  title={nextEvent.title}
+                  hour={convert24to12Hour(nextEvent.time)}
+                  prediction={''}
+                  weatherReminder={''}
+                  weatherImage={require('../../assets/cloudWithRain.png')}
+                  cardStyle={styles.enventAndWeatherCard}
+                />
+              )
+              }
             </View>
             <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.moreEventsTitle]}>Más Eventos</Text>
             <Pressable style={[inputStyle.input, styles.dateInput]}
