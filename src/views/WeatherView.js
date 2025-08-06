@@ -17,6 +17,7 @@ export default function WeatherView({navigation}) {
   const [loadingEvents, setLoadingEvents] = useState(true)
   const [currentDate, setCurrentDate] = useState(new Date())
   const [showDateSelector, setShowDateSelector] = useState(false);
+  const [nextEvent, setNextEvent] = useState(null)
 
   useEffect(() => {
     (async () => {
@@ -26,6 +27,16 @@ export default function WeatherView({navigation}) {
       setLoadingEvents(false)
     })();
   }, [events, currentDate])
+
+  useEffect(() => {
+    (() => {
+      const today = new Date()
+      if(events && currentDate.getDate() === today.getDate()) {
+        const nearestEvent = getItemWithNearestTime(events)
+        setNextEvent(nearestEvent)
+      }
+    })()
+  }, [events])
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -48,6 +59,32 @@ export default function WeatherView({navigation}) {
     hours = hours % 12 || 12;
     minutes = (minutes < 10) ? '0' + minutes : minutes;
     return `${hours}:${minutes} ${period}`;
+  }
+
+  function convertToHourInMinutes(hourStr) {
+    const [hh, mm] = hourStr.split(":").map(Number);
+    return hh * 60 + mm;
+  }
+
+  function getItemWithNearestTime(list) {
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    let nearest = null;
+    let smallerDifference = Infinity;
+
+    for (const item of list) {
+      const itemMinutes = convertToHourInMinutes(item.time);
+      const difference = Math.abs(itemMinutes - currentMinutes);
+
+      if(currentMinutes > itemMinutes) continue
+
+      if (difference < smallerDifference) {
+        smallerDifference = difference;
+        nearest = item;
+      }
+    }
+
+    return nearest;
   }
 
   const onChangeDateSelector = (event, selectedDate) => {
@@ -75,12 +112,12 @@ export default function WeatherView({navigation}) {
 
             </View>
             <View style={styles.componentContainer}>
-              <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Proximo Evento</Text>
+              <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Proximo Evento de hoy</Text>
               <EventAndWeather
-                title={'Reunion con pedro'}
-                hour={'2:00 pm'}
-                prediction={'70% de lluvia'}
-                weatherReminder={'¡Lleva tu paraguas!'}
+                title={nextEvent ? nextEvent.title : 'nothing'}
+                hour={nextEvent ? convert24to12Hour(nextEvent.time) : 'nothing'}
+                prediction={''}
+                weatherReminder={''}
                 weatherImage={require('../../assets/cloudWithRain.png')}
                 cardStyle={styles.enventAndWeatherCard}
               />

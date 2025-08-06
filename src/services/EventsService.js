@@ -5,6 +5,7 @@ export const GetAllEvents = async (date) => {
     .from('event')
     .select('*')
     .eq('date', date.toISOString().split('T')[0])
+    .order('time')
 
   if(error) {
     console.log('GetAllEvents error: ', error.message)
