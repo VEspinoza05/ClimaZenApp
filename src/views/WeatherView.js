@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, FlatList, ActivityIndicator, Pressable } from "
 import { secondTitleScreenStyle } from "../theme/Style";
 import WeatherStatus from "../components/WeatherStatusComponent";
 import EventAndWeather from '../components/EventAndWeatherComponent';
-import getWeatherFromSupabase from "../services/WeatherService";
+import { getWeatherFromSupabase } from "../services/WeatherService";
 import { useCurrentLocation } from '../hooks/useCurrentLocation';
 import { GetAllEvents } from '../services/EventsService';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -121,9 +121,9 @@ export default function WeatherView({navigation}) {
                 <EventAndWeather
                   title={nextEvent.title}
                   hour={convert24to12Hour(nextEvent.time)}
-                  prediction={''}
-                  weatherReminder={''}
-                  weatherImage={require('../../assets/cloudWithRain.png')}
+                  prediction={nextEvent.weatherCondition ? nextEvent.weatherCondition.text : 'Sin datos. Ubicacion no especificada'}
+                  weatherReminder={'X'}
+                  weatherImage={nextEvent.weatherCondition ? {uri: 'https:' + nextEvent.weatherCondition.icon} : null}
                   cardStyle={styles.enventAndWeatherCard}
                 />
               )
@@ -155,9 +155,9 @@ export default function WeatherView({navigation}) {
           <EventAndWeather
             title={item.title}
             hour={convert24to12Hour(item.time)}
-            prediction={''}
-            weatherReminder={''}
-            weatherImage={require('../../assets/cloudWithRain.png')}
+            prediction={item.weatherCondition ? item.weatherCondition.text : 'Sin datos. Ubicacion no especificada'}
+            weatherReminder={'X'}
+            weatherImage={item.weatherCondition ? {uri: 'https:' + item.weatherCondition.icon} : null}
             cardStyle={[
               styles.verticalBorders,
               styles.enventAndWeatherCard,
