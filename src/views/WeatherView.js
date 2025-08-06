@@ -26,7 +26,7 @@ export default function WeatherView({navigation}) {
       setEvents(eventsList)
       setLoadingEvents(false)
     })();
-  }, [events, currentDate])
+  }, [currentDate])
 
   useEffect(() => {
     (() => {
