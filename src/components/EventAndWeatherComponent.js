@@ -7,8 +7,8 @@ const EventAndWeatherComponent = ({ title, hour,  prediction, weatherReminder, w
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">Hora: {hour}</Text>
-          <Text style={styles.subtitle} numberOfLines={1} ellipsizeMode="tail">Prediccion: {prediction}</Text>
-          <Text style={styles.subtitle} numberOfLines={1} ellipsizeMode="tail">{weatherReminder}</Text>
+          <Text style={styles.subtitle} numberOfLines={2} ellipsizeMode="tail">Prediccion: {prediction}</Text>
+          <Text style={styles.subtitle} numberOfLines={2} ellipsizeMode="tail">{weatherReminder}</Text>
         </View>
          <Image source={weatherImage} style={styles.image} />
       </View>
