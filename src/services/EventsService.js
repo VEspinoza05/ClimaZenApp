@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase'
 import { getWeatherForecast } from './WeatherService'
+import { getWeatherReminder } from '../utils/WeatherReminders'
 
 export const GetAllEvents = async (date) => {
   const { data, error } = await supabase
@@ -14,17 +15,15 @@ export const GetAllEvents = async (date) => {
   }
   else {
     for(let i = 0; i < data.length; i++ ) {
-      console.log('Ejecutando bucle de data...')
       if(!data[i].latitude && !data[i].longitude) continue
 
-      console.log('No omitiendo bucle. paso del bucle: ' + i)
       const hour = data[i].time.split(':')[0]
       const weatherForecast = await getWeatherForecast(data[i].latitude, data[i].longitude,3,hour)
       const weatherForecastDays = weatherForecast.forecast.forecastday
       const eventForecastDay = weatherForecastDays.find(forecastday => forecastday.date === data[i].date)
       const forecastDayCondition = eventForecastDay.hour[0].condition
+      forecastDayCondition.reminder = getWeatherReminder(forecastDayCondition.code,hour)
       data[i].weatherCondition = forecastDayCondition
-      console.log(JSON.stringify(data[i]))
     }
 
     return data

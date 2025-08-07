@@ -122,7 +122,7 @@ export default function WeatherView({navigation}) {
                   title={nextEvent.title}
                   hour={convert24to12Hour(nextEvent.time)}
                   prediction={nextEvent.weatherCondition ? nextEvent.weatherCondition.text : 'Sin datos. Ubicacion no especificada'}
-                  weatherReminder={'X'}
+                  weatherReminder={nextEvent.weatherCondition ? nextEvent.weatherCondition.reminder : 'Sin datos. Ubicacion no especificada'}
                   weatherImage={nextEvent.weatherCondition ? {uri: 'https:' + nextEvent.weatherCondition.icon} : null}
                   cardStyle={styles.enventAndWeatherCard}
                 />
@@ -156,7 +156,7 @@ export default function WeatherView({navigation}) {
             title={item.title}
             hour={convert24to12Hour(item.time)}
             prediction={item.weatherCondition ? item.weatherCondition.text : 'Sin datos. Ubicacion no especificada'}
-            weatherReminder={'X'}
+            weatherReminder={item.weatherCondition ? item.weatherCondition.reminder : 'Sin datos. Ubicacion no especificada'}
             weatherImage={item.weatherCondition ? {uri: 'https:' + item.weatherCondition.icon} : null}
             cardStyle={[
               styles.verticalBorders,
