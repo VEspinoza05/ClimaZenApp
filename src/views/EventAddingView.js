@@ -119,8 +119,28 @@ export default function EventAddingView({navigation, route}) {
       }
     }
 
-    const handleDelete = async () => {
-      await DeleteEvent(event.id)
+    const handleDelete = () => {
+      Alert.alert(
+        'Confirmar acción',
+        'Estas seguro que quieres eliminar este evento?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel'
+          },
+          {
+            text: 'Eliminar',
+            onPress: async () => {
+              const error = await DeleteEvent(event.id)
+              if(error) 
+                Alert.alert('Error', error.message) 
+              else
+                navigation.goBack()
+            },
+            style: 'destructive'
+          }
+        ]
+      )
     }
 
     function getCurrentTimeWithTimezone(date) {
