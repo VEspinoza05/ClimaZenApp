@@ -83,6 +83,11 @@ export default function EventAddingView({navigation, route}) {
     const handleSubmit = async () => {
       let error;
 
+      if(title === '' || !isDateSelected || !isTimeSelected) {
+        Alert.alert('Error', 'Faltan titulo, fecha y/o hora') 
+        return;
+      }
+
       if(!event) {
         const newEvent = new EventModel({
           title: title,
