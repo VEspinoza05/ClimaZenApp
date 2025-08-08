@@ -53,3 +53,27 @@ export const CreateEvent = async (EventModel) => {
     return
   }
 }
+
+export const UpdateEvent = async (EventModel) => {
+  const { error } = await supabase
+    .from('event')
+    .update({
+      title: EventModel.title,
+      date: EventModel.date,
+      time: EventModel.time,
+      latitude: EventModel.latitude,
+      longitude: EventModel.longitude,
+      radius: EventModel.radius,
+      address: EventModel.address
+    })
+    .eq('id', EventModel.id)
+
+    if(error) {
+      console.log(error.message)
+      return error
+    }
+    else {
+      console.log('Event updated successfuly')
+      return
+    }
+}

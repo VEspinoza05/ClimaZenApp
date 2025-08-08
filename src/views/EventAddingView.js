@@ -7,7 +7,7 @@ import { useState, useContext, useEffect } from "react";
 import CustomButtonComponent from "../components/CustomButtonComponent";
 import { LocationContext } from "../contexts/LocationContext";
 import { EventModel } from "../models/EventModel";
-import { CreateEvent } from "../services/EventsService";
+import { CreateEvent, UpdateEvent } from "../services/EventsService";
 import { useAuth } from "../hooks/useAuth";
 
 export default function EventAddingView({navigation, route}) {
@@ -81,18 +81,33 @@ export default function EventAddingView({navigation, route}) {
     };
 
     const handleSubmit = async () => {
-      const event = new EventModel({
-        title: title,
-        date: date,
-        time: getCurrentTimeWithTimezone(time),
-        user_id:  session.user.id,
-        latitude: locationObj ? locationObj.coordinates.latitude : null,
-        longitude: locationObj ? locationObj.coordinates.longitude : null,
-        radius: locationObj ? locationObj.radius : null,
-        address: locationObj ? locationObj.address : null,
-      })
+      if(!event) {
+        const newEvent = new EventModel({
+          title: title,
+          date: date,
+          time: getCurrentTimeWithTimezone(time),
+          user_id:  session.user.id,
+          latitude: locationObj ? locationObj.coordinates.latitude : null,
+          longitude: locationObj ? locationObj.coordinates.longitude : null,
+          radius: locationObj ? locationObj.radius : null,
+          address: locationObj ? locationObj.address : null,
+        })
 
-      await CreateEvent(event)
+        await CreateEvent(newEvent)
+      } else {
+        const updatedEvent = new EventModel({
+          id: event.id,
+          title: title,
+          date: date,
+          time: getCurrentTimeWithTimezone(time),
+          latitude: locationObj ? locationObj.coordinates.latitude : null,
+          longitude: locationObj ? locationObj.coordinates.longitude : null,
+          radius: locationObj ? locationObj.radius : null,
+          address: locationObj ? locationObj.address : null,
+        })
+
+        await UpdateEvent(updatedEvent)
+      }
     }
 
     function getCurrentTimeWithTimezone(date) {
