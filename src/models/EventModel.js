@@ -1,5 +1,5 @@
 export class EventModel {
-    constructor({id, title, date, time, user_id, latitude, longitude, radius}) {
+    constructor({id, title, date, time, user_id, latitude, longitude, radius, address}) {
         this.id = id,
         this.title = title,
         this.date = date,
@@ -7,6 +7,7 @@ export class EventModel {
         this.user_id = user_id,
         this.latitude = latitude,
         this.longitude = longitude,
-        this.radius = radius
+        this.radius = radius,
+        this.address = address
     }
 }

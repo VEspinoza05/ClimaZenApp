@@ -154,6 +154,7 @@ export default function WeatherView({navigation}) {
         renderItem={({item, index}) => (
           <EventAndWeather
             title={item.title}
+            onPress={() => navigation.navigate('EventAdding', item)}
             hour={convert24to12Hour(item.time)}
             prediction={item.weatherCondition ? item.weatherCondition.text : 'Sin datos. Ubicacion no especificada'}
             weatherReminder={item.weatherCondition ? item.weatherCondition.reminder : 'Sin datos. Ubicacion no especificada'}

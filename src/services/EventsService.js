@@ -41,6 +41,7 @@ export const CreateEvent = async (EventModel) => {
       latitude: EventModel.latitude,
       longitude: EventModel.longitude,
       radius: EventModel.radius,
+      address: EventModel.address
     })
 
   if(error) {

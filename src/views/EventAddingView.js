@@ -10,7 +10,8 @@ import { EventModel } from "../models/EventModel";
 import { CreateEvent } from "../services/EventsService";
 import { useAuth } from "../hooks/useAuth";
 
-export default function EventAddingView({navigation}) {
+export default function EventAddingView({navigation, route}) {
+    const event = route.params
     const [title, setTitle] = useState('')
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState( new Date() )
@@ -26,6 +27,23 @@ export default function EventAddingView({navigation}) {
       minute: 'numeric',
       hour12: true
     }
+
+    useEffect(() => {
+      if(event) {
+        setTitle(event.title)
+        setDate(new Date(event.date))
+        setIsDateSelected(true)
+        setTime(new Date(`${event.date}T${event.time.split('-')[0]}`))
+        setIsTimeSelected(true)
+        setLocationObj(event.latitude ?
+          {
+            coordinates: { latitude: event.latitude, longitude: event.longitude },
+            radius: event.radius,
+            address: event.address
+          } : null
+        )
+      }
+    },[event])
 
     useEffect(() => {
       const unsubscribe = navigation.addListener('beforeRemove', (e) => {
@@ -71,6 +89,7 @@ export default function EventAddingView({navigation}) {
         latitude: locationObj ? locationObj.coordinates.latitude : null,
         longitude: locationObj ? locationObj.coordinates.longitude : null,
         radius: locationObj ? locationObj.radius : null,
+        address: locationObj ? locationObj.address : null,
       })
 
       await CreateEvent(event)
@@ -95,6 +114,9 @@ export default function EventAddingView({navigation}) {
       return null
     }
 
+    console.log(JSON.stringify(event))
+    console.log(JSON.stringify(locationObj))
+
     return(
         <View style={styles.screen}>
             <View style={styles.inputsContainer}>
@@ -103,6 +125,7 @@ export default function EventAddingView({navigation}) {
                     placeholder="Titulo"
                     style={[inputStyle.input, styles.titleInput]}
                     onChangeText={(text) => setTitle(text)}
+                    value={title}
                 />
                 <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
                     <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />

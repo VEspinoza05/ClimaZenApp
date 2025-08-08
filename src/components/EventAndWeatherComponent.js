@@ -1,8 +1,11 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
-const EventAndWeatherComponent = ({ title, hour,  prediction, weatherReminder, weatherImage, cardStyle, useSeparator = false }) => {
+const EventAndWeatherComponent = ({ title, hour, onPress, prediction, weatherReminder, weatherImage, cardStyle, useSeparator = false }) => {
   return (
-    <View style={[styles.card, cardStyle]}>
+    <TouchableOpacity
+      style={[styles.card, cardStyle]}
+      onPress={onPress}
+    >
       <View style={[styles.row, useSeparator ? styles.bottomBorder : undefined]}>
         <View style={styles.textContainer}>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">{title}</Text>
@@ -12,7 +15,7 @@ const EventAndWeatherComponent = ({ title, hour,  prediction, weatherReminder, w
         </View>
          <Image source={weatherImage} style={styles.image} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
