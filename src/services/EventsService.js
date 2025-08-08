@@ -77,3 +77,19 @@ export const UpdateEvent = async (EventModel) => {
       return
     }
 }
+
+export const DeleteEvent = async (eventId) => {
+  const { error } = await supabase
+    .from('event')
+    .delete()
+    .eq('id', eventId)
+
+  if(error) {
+    console.log(error.message)
+    return error
+  }
+  else {
+    console.log('Event deleted successfuly')
+    return
+  }
+}

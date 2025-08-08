@@ -7,7 +7,7 @@ import { useState, useContext, useEffect } from "react";
 import CustomButtonComponent from "../components/CustomButtonComponent";
 import { LocationContext } from "../contexts/LocationContext";
 import { EventModel } from "../models/EventModel";
-import { CreateEvent, UpdateEvent } from "../services/EventsService";
+import { CreateEvent, UpdateEvent, DeleteEvent } from "../services/EventsService";
 import { useAuth } from "../hooks/useAuth";
 
 export default function EventAddingView({navigation, route}) {
@@ -110,6 +110,10 @@ export default function EventAddingView({navigation, route}) {
       }
     }
 
+    const handleDelete = async () => {
+      await DeleteEvent(event.id)
+    }
+
     function getCurrentTimeWithTimezone(date) {
       const time = date.toTimeString().split(' ')[0];
       const tzOffset = getTimezoneOffsetString();
@@ -185,6 +189,14 @@ export default function EventAddingView({navigation, route}) {
                 </Pressable>
             </View>
             <View style={styles.actionButtonsContainer}>
+                {event && (
+                  <CustomButtonComponent
+                    title={'Eliminar'}
+                    style={styles.deleteButton}
+                    textStyle={styles.deleteButtonText}
+                    onPress={handleDelete}
+                  />
+                )}
                 <CustomButtonComponent
                     title={'Cancelar'}
                     textStyle={styles.cancelButtonText}
@@ -255,8 +267,18 @@ const styles = StyleSheet.create({
   actionButtonsContainer: {
     flexDirection: 'row',
     gap: 8,
+    flexWrap: 'wrap'
   },
   inputsContainer: {
     flex: 1,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    flexBasis: '100%',
+  },
+  deleteButtonText: {
+    fontFamily: 'OpenSans_400Regular',
+    fontSize: 18,
+    color: 'white',
   },
 })
