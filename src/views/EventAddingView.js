@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, Button, Text, Pressable } from "react-native";
+import { View, StyleSheet, TextInput, Button, Text, Pressable, Alert } from "react-native";
 import { inputStyle } from "../theme/Style"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -81,6 +81,8 @@ export default function EventAddingView({navigation, route}) {
     };
 
     const handleSubmit = async () => {
+      let error;
+
       if(!event) {
         const newEvent = new EventModel({
           title: title,
@@ -93,7 +95,7 @@ export default function EventAddingView({navigation, route}) {
           address: locationObj ? locationObj.address : null,
         })
 
-        await CreateEvent(newEvent)
+        error = await CreateEvent(newEvent)
       } else {
         const updatedEvent = new EventModel({
           id: event.id,
@@ -106,7 +108,14 @@ export default function EventAddingView({navigation, route}) {
           address: locationObj ? locationObj.address : null,
         })
 
-        await UpdateEvent(updatedEvent)
+        error = await UpdateEvent(updatedEvent)
+      }
+
+      if(error) {
+        Alert.alert('Error', error.message) 
+      }
+      else {
+        navigation.goBack()
       }
     }
 
