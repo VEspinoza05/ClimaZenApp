@@ -32,9 +32,9 @@ export default function EventAddingView({navigation, route}) {
     useEffect(() => {
       if(event) {
         setTitle(event.title)
-        setDate(new Date(event.date))
+        setDate(new Date(`${event.date}T${event.time}:00`))
         setIsDateSelected(true)
-        setTime(new Date(`${event.date}T${event.time.split('-')[0]}`))
+        setTime(new Date(`${event.date}T${event.time}:00`))
         setIsTimeSelected(true)
         setLocationObj(event.latitude ?
           {
@@ -184,7 +184,7 @@ export default function EventAddingView({navigation, route}) {
                 <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
                     <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />
                     <Text style={[styles.pressableLabel, isDateSelected ? {color: 'black'} : undefined]}>
-                        {isDateSelected ? date.toDateString() : 'Fecha'}
+                        {isDateSelected ? date.toLocaleDateString('es-ES') : 'Fecha'}
                     </Text>
                 </Pressable>
                 {showDateSelector && (
