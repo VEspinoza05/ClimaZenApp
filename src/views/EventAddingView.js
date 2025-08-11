@@ -9,6 +9,7 @@ import { LocationContext } from "../contexts/LocationContext";
 import { EventModel } from "../models/EventModel";
 import { CreateEvent, UpdateEvent, DeleteEvent } from "../services/EventsService";
 import { useAuth } from "../hooks/useAuth";
+import { parseDate } from "../utils/DateUtilities";
 
 export default function EventAddingView({navigation, route}) {
     const event = route.params
@@ -91,7 +92,7 @@ export default function EventAddingView({navigation, route}) {
       if(!event) {
         const newEvent = new EventModel({
           title: title,
-          date: date,
+          date: parseDate(date),
           time: getCurrentTimeWithTimezone(time),
           user_id:  session.user.id,
           latitude: locationObj ? locationObj.coordinates.latitude : null,
@@ -105,7 +106,7 @@ export default function EventAddingView({navigation, route}) {
         const updatedEvent = new EventModel({
           id: event.id,
           title: title,
-          date: date,
+          date: parseDate(date),
           time: getCurrentTimeWithTimezone(time),
           latitude: locationObj ? locationObj.coordinates.latitude : null,
           longitude: locationObj ? locationObj.coordinates.longitude : null,

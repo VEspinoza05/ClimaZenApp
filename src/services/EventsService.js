@@ -1,12 +1,13 @@
 import { supabase } from '../lib/supabase'
 import { getWeatherForecast } from './WeatherService'
 import { getWeatherReminder } from '../utils/WeatherReminders'
+import { parseDate } from '../utils/DateUtilities'
 
 export const GetAllEvents = async (date) => {
   const { data, error } = await supabase
     .from('event')
     .select('*')
-    .eq('date', date.toISOString().split('T')[0])
+    .eq('date', parseDate(date))
     .order('time')
 
   if(error) {
