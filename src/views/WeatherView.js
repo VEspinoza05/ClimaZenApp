@@ -39,6 +39,15 @@ export default function WeatherView({navigation}) {
   }, [events])
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const eventsList = await GetAllEvents(currentDate)
+      
+      setEvents(eventsList)
+    })
+    return unsubscribe
+  }, [navigation])
+
+  useEffect(() => {
     const fetchWeather = async () => {
       try {
         if (!location) return; 
@@ -113,7 +122,7 @@ export default function WeatherView({navigation}) {
             </View>
             <View style={styles.componentContainer}>
               <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Proximo Evento de hoy</Text>
-              {loadingEvents ? (
+              {loadingEvents && !nextEvent ? (
                 <ActivityIndicator size="large" color="#007aff" />
               ) : !nextEvent ? (
                 <Text>No hay evento disponible</Text>
@@ -135,7 +144,7 @@ export default function WeatherView({navigation}) {
             >
               <FontAwesome name='calendar' size={24} color='#6a6a6a' />
               <Text style={[styles.pressableLabel, {color: 'black'} ]}>
-                {currentDate.toDateString()}
+                {currentDate.toLocaleDateString('es-ES')}
               </Text>
             </Pressable>
               {showDateSelector && (
