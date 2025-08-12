@@ -242,7 +242,7 @@ export default function EventAddingView({navigation, route}) {
                 />
                 <CustomButtonComponent
                     title={'Guardar'}
-                    style={styles.disabledSaveButton}
+                    style={styles.SaveButton}
                     textStyle={styles.saveButtonText}
                     onPress={handleSubmit}
                 />
@@ -288,10 +288,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#6a6a6a',
   },
-  disabledSaveButton: {
+  SaveButton: {
     borderWidth: 2,
-    borderColor: '#6a6a6a',
-    backgroundColor: '#6a6a6a',
+    borderColor: '#3ca380',
+    backgroundColor: '#3ca380',
     flex: 1,
   },
   saveButtonText: {
