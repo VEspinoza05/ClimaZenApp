@@ -1,9 +1,16 @@
 import { supabase } from '../lib/supabase'
 import { getWeatherForecast } from './WeatherService'
 import { getWeatherReminder } from '../utils/WeatherReminders'
-import { parseDate } from '../utils/DateUtilities'
+import { isDateGreaterThanXDays, parseDate } from '../utils/DateUtilities'
 
 export const GetAllEvents = async (date) => {
+  console.log('Llamando GetAllEvents para fecha:', date);
+  const today = new Date()
+  today.setHours(0,0,0,0)
+  date.setHours(0,0,0,0)
+
+  console.log(parseDate(date))
+
   const { data, error } = await supabase
     .from('event')
     .select('*')
@@ -17,6 +24,21 @@ export const GetAllEvents = async (date) => {
   else {
     for(let i = 0; i < data.length; i++ ) {
       if(!data[i].latitude && !data[i].longitude) continue
+
+      if(date < today) {
+        data[i].weatherCondition = {
+          text: 'No se puede obtener predicciones del dia anterior',
+          reminder: ''
+        }
+        continue
+      }
+      else if(isDateGreaterThanXDays(date,today,2)) {
+        data[i].weatherCondition = {
+          text: 'Solo se pueden obtener predicciones de hoy y los proximos 2 dias',
+          reminder: ''
+        }
+        continue
+      }
 
       const hour = data[i].time.split(':')[0]
       const weatherForecast = await getWeatherForecast(data[i].latitude, data[i].longitude,3,hour)

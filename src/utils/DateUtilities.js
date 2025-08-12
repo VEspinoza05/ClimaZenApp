@@ -5,3 +5,10 @@ export const parseDate = (date) => {
 
   return `${year}-${month}-${day}`;
 }
+
+export const isDateGreaterThanXDays = (targetDate, referenceDate, x) => {
+  const futureDate = new Date(referenceDate)
+  futureDate.setDate(referenceDate.getDate() + x);
+
+  return targetDate > futureDate;
+}
