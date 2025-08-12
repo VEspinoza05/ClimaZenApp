@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Text, View, StyleSheet, FlatList, ActivityIndicator, Pressable } from "react-native"
 import { secondTitleScreenStyle } from "../theme/Style";
 import WeatherStatus from "../components/WeatherStatusComponent";
@@ -9,6 +9,7 @@ import { GetAllEvents } from '../services/EventsService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { inputStyle } from "../theme/Style"
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function WeatherView({navigation}) {
   const [weatherData, setWeatherData] = useState(null);
@@ -18,15 +19,30 @@ export default function WeatherView({navigation}) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [showDateSelector, setShowDateSelector] = useState(false);
   const [nextEvent, setNextEvent] = useState(null)
+  const lastFetchRef = useRef(null);
+
+  const fetchEvents = useCallback(async () => {
+    const now = Date.now();
+    if (lastFetchRef.current && now - lastFetchRef.current < 500) {
+      return;
+    }
+    lastFetchRef.current = now;
+
+    setLoadingEvents(true);
+    const eventsList = await GetAllEvents(currentDate);
+    setEvents(eventsList);
+    setLoadingEvents(false);
+  }, [currentDate]);
 
   useEffect(() => {
-    (async () => {
-      setLoadingEvents(true)
-      const eventsList = await GetAllEvents(currentDate)
-      setEvents(eventsList)
-      setLoadingEvents(false)
-    })();
-  }, [currentDate])
+    fetchEvents();
+  }, [fetchEvents]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchEvents();
+    }, [fetchEvents])
+  );
 
   useEffect(() => {
     (() => {
@@ -37,15 +53,6 @@ export default function WeatherView({navigation}) {
       }
     })()
   }, [events])
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
-      const eventsList = await GetAllEvents(currentDate)
-      
-      setEvents(eventsList)
-    })
-    return unsubscribe
-  }, [navigation])
 
   useEffect(() => {
     const fetchWeather = async () => {
