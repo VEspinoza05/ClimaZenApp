@@ -78,7 +78,7 @@ export default function TaskAddingView({navigation}) {
             <FlatList
                 removeClippedSubviews={false}
 
-                ListHeaderComponent={() => (
+                ListHeaderComponent={
                     <View>
                         <TextInput 
                             multiline={true}
@@ -130,7 +130,7 @@ export default function TaskAddingView({navigation}) {
                         </Pressable>
                         <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Tareas Sugeridas</Text>
                     </View>
-                )}
+                }
 
                 data={DATA}
 
