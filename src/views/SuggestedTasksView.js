@@ -1,7 +1,7 @@
 import { SectionList, Text, StyleSheet, TouchableOpacity, View } from "react-native"
 import { secondTitleScreenStyle } from "../theme/Style"
 
-export default function SuggestedTasksView() {
+export default function SuggestedTasksView({navigation, route}) {
     const DATA = [
         {
             category: 'Movilidad',
@@ -20,6 +20,11 @@ export default function SuggestedTasksView() {
             ]
         }
     ]
+
+    const sendDataAndGoBack = (data) => {
+        route.params.onGoBack(data.name);
+        navigation.goBack();
+    };
 
     return(
         <View style={styles.screen}>
@@ -42,6 +47,7 @@ export default function SuggestedTasksView() {
                                 styles.touchableContainer,
                                 index !== section.data.length - 1 ? styles.separatorLine : undefined
                             ]}
+                            onPress={() => sendDataAndGoBack(item)}
                         >
                             <Text style={styles.textItem}>
                                 {item.name}

@@ -72,6 +72,14 @@ export default function TaskAddingView({navigation}) {
         setIsTimeSelected(true);
         setTime(selectedTime);
     };
+
+    const handleDataFromSuggestedTasksView = (data) => {
+      setTitle(data)
+    };
+
+    const navigateToSuggestedTasks = () => {
+      navigation.navigate('SuggestedTasks', { onGoBack: handleDataFromSuggestedTasksView });
+    };
     
     return(
         <View style={styles.screen}>
@@ -146,7 +154,7 @@ export default function TaskAddingView({navigation}) {
                         <TouchableOpacity
                             style={[styles.touchableContainer, index !== DATA.length - 1 ? styles.separatorLine : undefined,]}
                             onPress={() => index === DATA.length - 1 ?
-                                navigation.navigate('SuggestedTasks') :
+                                navigateToSuggestedTasks() :
                                 handleSuggestedTaskSelection(item)
                             }
                         >
