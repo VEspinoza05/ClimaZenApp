@@ -5,7 +5,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import CustomButtonComponent from "../components/CustomButtonComponent";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { LocationContext } from "../contexts/LocationContext";
 
 export default function TaskAddingView({navigation}) {
     const suggestedTasks = [
@@ -25,12 +26,25 @@ export default function TaskAddingView({navigation}) {
     const [showTimeSelector, setShowTimeSelector] = useState(false)
     const [isDateSelected, setIsDateSelected] = useState(false)
     const [isTimeSelected, setIsTimeSelected] = useState(false)
+    const { locationObj, setLocationObj } = useContext(LocationContext);
 
     const timeOptions = {
         hour: 'numeric',
         minute: 'numeric',
         hour12: true
     }
+
+    const handleGoToLocationPicker = () => {
+      navigation.navigate('LocationPicker')
+    }
+
+    useEffect(() => {
+      const unsubscribe = navigation.addListener('beforeRemove', (e) => {
+        setLocationObj(null)
+      });
+
+      return unsubscribe;
+    }, [navigation]);
 
     const onChangeDateSelector = (event, selectedDate) => {
         setShowDateSelector(false);
@@ -96,10 +110,13 @@ export default function TaskAddingView({navigation}) {
                                 onChange={onChangeTimeSelector}
                             />
                         )}
-                        <Pressable style={[inputStyle.input, styles.locationInput]} >
+                        <Pressable
+                            style={[inputStyle.input, styles.locationInput]}
+                            onPress={handleGoToLocationPicker}
+                        >
                             <Entypo name="location-pin" size={24} color={'#6a6a6a'} />
-                            <Text style={[styles.pressableLabel]}>
-                                Ubicación
+                            <Text style={[styles.pressableLabel, (locationObj && {color: 'black'}) ]}>
+                                { locationObj ? locationObj.address : 'Ubicación'}
                             </Text>
                         </Pressable>
                         <Text style={[secondTitleScreenStyle.secondTitleScreen, styles.homeTitleScreen]}>Tareas Sugeridas</Text>

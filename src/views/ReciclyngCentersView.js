@@ -51,7 +51,7 @@ export default function ReciclyngCentersView({navigation}) {
     console.log('Ubicacion', `lat: ${latitude}, lon: ${longitude}, radius: ${radiusValue}`)
   };
 
-  const handleReturnToEventAdd = () => {
+  const handleReturnToAddingView = () => {
     setLocationObj({
       coordinates: markedLocation,
       radius: radiusValue,
@@ -107,9 +107,15 @@ export default function ReciclyngCentersView({navigation}) {
                 thumbTintColor='#3ca380'
             />
             <CustomButton
-                title={previousRoute.name === 'EventAdding' ? 'Seleccionar' : 'Recordarme reciclar' }
+                title={(previousRoute.name === 'EventAdding' ||
+                  previousRoute.name === 'TaskAdding') ?
+                  'Seleccionar' :
+                  'Recordarme reciclar' }
                 style={[greenButtonStyle.greenButton, styles.reminderButton]}
-                onPress={previousRoute.name === 'EventAdding' ? handleReturnToEventAdd : undefined }
+                onPress={(previousRoute.name === 'EventAdding' ||
+                  previousRoute.name === 'TaskAdding') ?
+                  handleReturnToAddingView
+                  : undefined }
             />
         </View>
     )
