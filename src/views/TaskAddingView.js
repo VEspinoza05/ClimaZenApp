@@ -20,6 +20,7 @@ export default function TaskAddingView({navigation}) {
         'Ver mas tareas...',
     ]
 
+    const [title, setTitle] = useState('')
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
     const [showDateSelector, setShowDateSelector] = useState(false)
@@ -36,6 +37,10 @@ export default function TaskAddingView({navigation}) {
 
     const handleGoToLocationPicker = () => {
       navigation.navigate('LocationPicker')
+    }
+
+    const handleSuggestedTaskSelection = (suggestedTask) => {
+      setTitle(suggestedTask)
     }
 
     useEffect(() => {
@@ -71,12 +76,16 @@ export default function TaskAddingView({navigation}) {
     return(
         <View style={styles.screen}>
             <FlatList
+                removeClippedSubviews={false}
+
                 ListHeaderComponent={() => (
                     <View>
                         <TextInput 
                             multiline={true}
                             placeholder="Titulo"
                             style={[inputStyle.input, styles.titleInput]}
+                            onChangeText={(text) => setTitle(text)}
+                            value={title}
                         />
                         <Pressable style={[inputStyle.input, styles.timeInput]} onPress={() => setShowDateSelector(true)} >
                             <FontAwesome name='calendar' size={24} color={isDateSelected ? 'black' : '#6a6a6a'} />
@@ -138,7 +147,7 @@ export default function TaskAddingView({navigation}) {
                             style={[styles.touchableContainer, index !== DATA.length - 1 ? styles.separatorLine : undefined,]}
                             onPress={() => index === DATA.length - 1 ?
                                 navigation.navigate('SuggestedTasks') :
-                                Alert.alert("Tarea sugerida")
+                                handleSuggestedTaskSelection(item)
                             }
                         >
                             <Text style={styles.textItem}>
